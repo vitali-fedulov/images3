@@ -1,0 +1,67 @@
+
+Maybe decode Jpeg directly to YCbCr with function
+func (p *YCbCr) YCbCrAt(x, y int) color.YCbCr
+where type YCbCr struct {
+	Y, Cb, Cr uint8        <<< Look, no alpha at all. But some Jpegs return Gray
+                           <<< or even CMYK:
+                           https://cs.opensource.google/go/go/+/refs/tags/go1.17.3:src/image/jpeg/reader.go;l=774
+                           
+                           BUT maybe just use to RGB first, to all non YCbCr to simplify.
+}
+https://pkg.go.dev/image#YCbCr.YCbCrAt
+with preliminary filtering:
+if img.ColorModel() == color.YCbCrModel {
+    color.YCbCr = img.YCbCrAt(x, y int)
+} else 
+    ....
+}
+
+VERIFY that majority of images are actually 
+img.ColorModel() == color.YCbCrModel
+
+
+func DecodeConfig(r io.Reader) (image.Config, error)
+DecodeConfig returns the color model and dimensions of a PNG image without decoding the entire image.
+
+
+
+Replace my own YCbCr to Go images function
+RGBToYCbCr(r, g, b uint8) (uint8, uint8, uint8) 
+https://cs.opensource.google/go/go/+/refs/tags/go1.17.3:src/image/color/ycbcr.go;l=8
+
+
+Optimize speed by changing to 
+	// An image's bounds do not necessarily start at (0, 0), so the two loops start
+	// at bounds.Min.Y and bounds.Min.X. Looping over Y first and X second is more
+	// likely to result in better memory access patterns than X first and Y second.
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		for x := bounds.Min.X; x < bounds.Max.X; x++ {
+
+
+
+
+
+Introduce methods and interfaces? Maybe for package hyper???
+
+Review all files and set to non-exported all non-universal items.
+I.e. those that I do not want to support long term.
+
+
+Rewrite the program to cluster with hashes.
+
+Verify that there are no cases when inner loop of Similar02 would produce
+more than 1 ids slices. Thus immediate return should not be used,
+instead accumulating and merging ids.
+
+----------------------------------------
+
+Add functions for identical files?
+E.g. similarity by file size, pixel by pixel, and fast checksum.
+
+Thumbnail extractor function similar to JS version?
+
+Refactor a testing program to run against a large image set.
+
+-----------------------------------------
+
+Maybe add a jpeg thumbnail reader for fast scans like in www version.
