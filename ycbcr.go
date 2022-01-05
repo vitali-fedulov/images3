@@ -1,6 +1,8 @@
 package images
 
-// yCbCr transforms RGB components to YCbCr. // TODO: Maybe export the var?
+// yCbCr transforms RGB components to YCbCr. This is a high
+// precision version different from the Golang image library
+// operating on uint8.
 func yCbCr(r, g, b float32) (yc, cb, cr float32) {
 	yc = 0.299000*r + 0.587000*g + 0.114000*b
 	cb = 128 - 0.168736*r - 0.331264*g + 0.500000*b

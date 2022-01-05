@@ -22,8 +22,8 @@ func ResampleByNearest(src image.Image, dstX, dstY int) (dst image.RGBA,
 	var (
 		r, g, b, a uint32
 	)
-	for x := 0; x < dstX; x++ {
-		for y := 0; y < dstY; y++ {
+	for y := 0; y < dstY; y++ {
+		for x := 0; x < dstX; x++ {
 			r, g, b, a = src.At(
 				x*srcX/dstX+xMin,
 				y*srcY/dstY+yMin).RGBA()
