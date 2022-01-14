@@ -1,14 +1,17 @@
 package images
 
 import (
-	"reflect"
+	"math"
 	"testing"
 )
 
 func testNormalize(src, want IconT, numPix int, t *testing.T) {
 	dst := Normalize(src, numPix)
-	if !reflect.DeepEqual(dst, want) {
-		t.Errorf("Want %v, got %v.", want, dst)
+	for i := range dst {
+		if math.Round(float64(dst[i])) != math.Round(float64(want[i])) {
+			t.Errorf("Want %v, got %v.", want, dst)
+			break
+		}
 	}
 }
 

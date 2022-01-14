@@ -5,7 +5,7 @@ package images
 // numPixels is number of pixels in an icon.
 func Normalize(src IconT, numPixels int) IconT {
 
-	dest := make([]float32, numPixels*3)
+	dst := make([]float32, numPixels*3)
 	var c1Min, c2Min, c3Min, c1Max, c2Max, c3Max float32
 	c1Min, c2Min, c3Min = 256, 256, 256
 	c1Max, c2Max, c3Max = 0, 0, 0
@@ -13,43 +13,38 @@ func Normalize(src IconT, numPixels int) IconT {
 
 	// Looking for extreme values.
 	for n = 0; n < numPixels; n++ {
+		// Channel 1.
 		if src[n] > c1Max {
 			c1Max = src[n]
 		}
 		if src[n] < c1Min {
 			c1Min = src[n]
 		}
-	}
-	for n = numPixels; n < 2*numPixels; n++ {
-		if src[n] > c2Max {
-			c2Max = src[n]
+		// Channel 2.
+		if src[n+numPixels] > c2Max {
+			c2Max = src[n+numPixels]
 		}
-		if src[n] < c2Min {
-			c2Min = src[n]
+		if src[n+numPixels] < c2Min {
+			c2Min = src[n+numPixels]
 		}
-	}
-	for n = 2 * numPixels; n < 3*numPixels; n++ {
-		if src[n] > c3Max {
-			c3Max = src[n]
+		// Channel 3.
+		if src[n+2*numPixels] > c3Max {
+			c3Max = src[n+2*numPixels]
 		}
-		if src[n] < c3Min {
-			c3Min = src[n]
+		if src[n+2*numPixels] < c3Min {
+			c3Min = src[n+2*numPixels]
 		}
 	}
 
 	// Normalization.
-	rMM := c1Max - c1Min
-	gMM := c2Max - c2Min
-	bMM := c3Max - c3Min
+	rCoeff := 255 / (c1Max - c1Min)
+	gCoeff := 255 / (c2Max - c2Min)
+	bCoeff := 255 / (c3Max - c3Min)
 	for n = 0; n < numPixels; n++ {
-		dest[n] = (src[n] - c1Min) * 255 / rMM
-	}
-	for n = numPixels; n < 2*numPixels; n++ {
-		dest[n] = (src[n] - c2Min) * 255 / gMM
-	}
-	for n = 2 * numPixels; n < 3*numPixels; n++ {
-		dest[n] = (src[n] - c3Min) * 255 / bMM
+		dst[n] = (src[n] - c1Min) * rCoeff
+		dst[n+numPixels] = (src[n+numPixels] - c2Min) * gCoeff
+		dst[n+2*numPixels] = (src[n+2*numPixels] - c3Min) * bCoeff
 	}
 
-	return dest
+	return dst
 }
