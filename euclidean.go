@@ -22,51 +22,32 @@ const (
 // When the distance is small, the function returns true.
 // iconA and iconB are generated with the Icon function.
 // EucSimilar is recommended for general use, because it uses
-// thorougly tested constants. It wraps EucSimilarCustom with
-// those constants.
+// thorougly tested thresholds. It wraps EucMetrics with
+// those thresholds.
 func EucSimilar(iconA, iconB IconT) bool {
-	return EucSimilarCustom(iconA, iconB, euclDist2Y, euclDist2CbCr)
+	m1, m2, m3 := EucMetrics(iconA, iconB)
+	return m1 < euclDist2Y && m2 < euclDist2CbCr && m3 < euclDist2CbCr
 }
 
-// EucSimilarCustom is a customizable function, where parameters
-// euclDist2Y and euclDist2CbCr can be changed to non-default
-// distance coefficients.
-func EucSimilarCustom(
-	iconA, iconB IconT, euclDist2Y, euclDist2CbCr float32) bool {
+// EucMetrics returns Euclidean distances between 2 icons.
+// These are 3 metrics corresponding to each color channel.
+// The distances are squared to avoid square root calculations.
+func EucMetrics(iconA, iconB IconT) (m1, m2, m3 float32) {
 
-	var cA, cB, s float32
-
-	// Euclidean distance filter on Y-channel.
+	var cA, cB float32
 	for i := 0; i < numIcon2Pixels; i++ {
+		// Channel 1.
 		cA = iconA[i]
 		cB = iconB[i]
-		s += (cA - cB) * (cA - cB)
+		m1 += (cA - cB) * (cA - cB)
+		// Channel 2.
+		cA = iconA[i+numIcon2Pixels]
+		cB = iconB[i+numIcon2Pixels]
+		m2 += (cA - cB) * (cA - cB)
+		// Channel 3.
+		cA = iconA[i+2*numIcon2Pixels]
+		cB = iconB[i+2*numIcon2Pixels]
+		m3 += (cA - cB) * (cA - cB)
 	}
-	if s > euclDist2Y {
-		return false
-	}
-	s = 0
-
-	// Euclidean distance filter on Cb-channel.
-	for i := 0; i < numIcon2Pixels; i++ {
-		cA = iconA[numIcon2Pixels+i]
-		cB = iconB[numIcon2Pixels+i]
-		s += (cA - cB) * (cA - cB)
-	}
-	if s > euclDist2CbCr {
-		return false
-	}
-	s = 0
-
-	// Euclidean distance filter on Cr-channel.
-	for i := 0; i < numIcon2Pixels; i++ {
-		cA = iconA[numIcon2Pixels+numIcon2Pixels+i]
-		cB = iconB[numIcon2Pixels+numIcon2Pixels+i]
-		s += (cA - cB) * (cA - cB)
-	}
-	if s > euclDist2CbCr {
-		return false
-	}
-
-	return true
+	return m1, m2, m3
 }

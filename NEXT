@@ -1,7 +1,7 @@
 
-Instead of EucSimilarCustom and other custom similarity functions
-introduce functions returning similarity metrics. Then the user
-could sort by those values or use own thresholds.
+Make EucMetrics independent from predefined consts.
+Or not, because EucSimilar thresholds depend on those.
+Alternatively make an optional argument of thresholds params to EucSimilar.
 
 
 ==============================================
