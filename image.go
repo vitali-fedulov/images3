@@ -3,7 +3,25 @@ package images
 import (
 	"image"
 	"image/color"
+	"image/jpeg"
+	"image/png"
+	"log"
+	"os"
 )
+
+// Open opens and decodes an image file for a given path.
+func Open(path string) (img image.Image, err error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+	img, _, err = image.Decode(file)
+	if err != nil {
+		return nil, err
+	}
+	return img, err
+}
 
 // ResampleByNearest resizes an image by the nearest neighbour method to the
 // output size outX, outY. It also returns the size inX, inY of the input image.
@@ -32,4 +50,24 @@ func ResampleByNearest(src image.Image, dstX, dstY int) (dst image.RGBA,
 		}
 	}
 	return dst, srcX, srcY
+}
+
+// Png encodes and saves image.RGBA to a file.
+func Png(img *image.RGBA, path string) {
+	if destFile, err := os.Create(path); err != nil {
+		log.Println("Cannot create file: ", path, err)
+	} else {
+		defer destFile.Close()
+		png.Encode(destFile, img)
+	}
+}
+
+// Jpg encodes and saves image.RGBA to a file.
+func Jpg(img *image.RGBA, path string, quality int) {
+	if destFile, err := os.Create(path); err != nil {
+		log.Println("Cannot create file: ", path, err)
+	} else {
+		defer destFile.Close()
+		jpeg.Encode(destFile, img, &jpeg.Options{Quality: quality})
+	}
 }

@@ -136,6 +136,16 @@ func Get(icon IconT, size int, p Point) (c1, c2, c3 float32) {
 	return c1, c2, c3
 }
 
+// yCbCr transforms RGB components to YCbCr. This is a high
+// precision version different from the Golang image library
+// operating on uint8.
+func yCbCr(r, g, b float32) (yc, cb, cr float32) {
+	yc = 0.299000*r + 0.587000*g + 0.114000*b
+	cb = 128 - 0.168736*r - 0.331264*g + 0.500000*b
+	cr = 128 + 0.500000*r - 0.418688*g - 0.081312*b
+	return yc, cb, cr
+}
+
 // LumaValues returns luma values at sample pixels of the small icon
 // (from IconSmall).
 func LumaValues(icon IconT, sample []Point) (v []float64) {
@@ -159,4 +169,53 @@ func ToRGBA(icon IconT, size int) *image.RGBA {
 		}
 	}
 	return img
+}
+
+// Normalize stretches histograms for the 3 channels of an icon, so that
+// minimum and maximum values of each are 0 and 255 correspondingly.
+// numPixels is number of pixels in an icon.
+func Normalize(src IconT, numPixels int) IconT {
+
+	dst := make([]float32, numPixels*3)
+	var c1Min, c2Min, c3Min, c1Max, c2Max, c3Max float32
+	c1Min, c2Min, c3Min = 256, 256, 256
+	c1Max, c2Max, c3Max = 0, 0, 0
+	var n int
+
+	// Looking for extreme values.
+	for n = 0; n < numPixels; n++ {
+		// Channel 1.
+		if src[n] > c1Max {
+			c1Max = src[n]
+		}
+		if src[n] < c1Min {
+			c1Min = src[n]
+		}
+		// Channel 2.
+		if src[n+numPixels] > c2Max {
+			c2Max = src[n+numPixels]
+		}
+		if src[n+numPixels] < c2Min {
+			c2Min = src[n+numPixels]
+		}
+		// Channel 3.
+		if src[n+2*numPixels] > c3Max {
+			c3Max = src[n+2*numPixels]
+		}
+		if src[n+2*numPixels] < c3Min {
+			c3Min = src[n+2*numPixels]
+		}
+	}
+
+	// Normalization.
+	rCoeff := 255 / (c1Max - c1Min)
+	gCoeff := 255 / (c2Max - c2Min)
+	bCoeff := 255 / (c3Max - c3Min)
+	for n = 0; n < numPixels; n++ {
+		dst[n] = (src[n] - c1Min) * rCoeff
+		dst[n+numPixels] = (src[n+numPixels] - c2Min) * gCoeff
+		dst[n+2*numPixels] = (src[n+2*numPixels] - c3Min) * bCoeff
+	}
+
+	return dst
 }
