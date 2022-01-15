@@ -27,6 +27,11 @@ Introduce methods and interfaces? Maybe for package hyper???
 
 ==============================================
 
+Rewrite README with new examples
+
+=====================================
+
+
 
 Verify that there are no cases when inner loop of Similar02 would produce
 more than 1 ids slices. Thus immediate return should not be used,

@@ -2,7 +2,7 @@
 
 Near duplicates and resized images can be found with the package. Function `Open` by default support GIF, JPEG and PNG (golang.org/pkg/image/ as in October 2018). There is only one dependency from my another package [hyper](https://github.com/vitali-fedulov/hyper).
 
-Demo: [similar image search and clustering](https://similar.pictures) (deployed [from](https://github.com/vitali-fedulov/vitali-fedulov.github.io)).
+**Demo**: [similar image search and clustering](https://similar.pictures) (deployed [from](https://github.com/vitali-fedulov/vitali-fedulov.github.io)).
 
 `Similar` function gives a verdict whether 2 images are similar or not. The library also contains wrapper functions to open/save images and basic image resampling/resizing.
 
