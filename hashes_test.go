@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-var icon1 = IconT{
+var p1 = []float32{
 	255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
 	255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
 	255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
@@ -42,9 +42,9 @@ var icon1 = IconT{
 	255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
 	255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
 	255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
-	255, 255}
+	255, 255, 255}
 
-var icon2 = IconT{
+var p2 = []float32{
 	231, 183, 148, 21, 47, 16, 69, 45, 151, 64, 181,
 	49, 243, 60, 147, 177, 19, 85, 205, 146, 236,
 	67, 28, 163, 143, 94, 138, 214, 149, 103, 57,
@@ -82,7 +82,7 @@ var icon2 = IconT{
 	163, 82, 236, 98, 206, 218, 154, 231, 5, 201,
 	125, 47, 238, 152, 154, 12, 115, 225}
 
-var icon3 = IconT{
+var p3 = []float32{
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -119,19 +119,23 @@ var icon3 = IconT{
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0}
+	0, 0, 0}
 
 func TestHashSet10(t *testing.T) {
 	want := []uint64{
 		13332021, 1013332021, 13332121,
 		1013332121, 13332022, 1013332022,
 		13332122, 1013332122}
+	icon2 := NewIcon(11 * 11 * 3)
+	icon2.Pixels = p2
 	got := HashSet(icon2, HyperPoints10, 0.25, 4)
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Wanted %v, got %v.", want, got)
 	}
 
 	want = []uint64{0}
+	icon3 := NewIcon(11 * 11 * 3)
+	icon3.Pixels = p3
 	got = HashSet(icon3, HyperPoints10, 0.25, 4)
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Wanted %v, got %v.", want, got)
@@ -140,12 +144,16 @@ func TestHashSet10(t *testing.T) {
 
 func TestCentralHash10(t *testing.T) {
 	want := uint64(3333333333)
+	icon1 := NewIcon(11 * 11 * 3)
+	icon1.Pixels = p1
 	got := CentralHash(icon1, HyperPoints10, 0.25, 4)
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Wanted %v, got %v.", want, got)
 	}
 
 	want = uint64(13332021)
+	icon2 := NewIcon(11 * 11 * 3)
+	icon2.Pixels = p2
 	got = CentralHash(icon2, HyperPoints10, 0.25, 4)
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Wanted %v, got %v.", want, got)

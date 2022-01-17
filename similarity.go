@@ -2,14 +2,14 @@ package images
 
 // Similar returns similarity verdict based on Euclidean
 // and proportion similarity (both with default parameters).
-// For large image databases comparing images only with this
+// For large image collections comparing images only with this
 // function will be slow. In such case use Fast function
-// to get a slice of rough matches, then Similar
-// for the final verdict.
-func Similar(
-	iconA, iconB IconT, imgSizeA, imgSizeB Point) bool {
+// to get a slice of rough matches, then use Similar
+// to get the final verdict.
+func Similar(iconA, iconB IconT) bool {
 
-	if PropSimilar(imgSizeA, imgSizeB) {
+	if PropSimilar(iconA, iconB) {
+
 		if EucSimilar(iconA, iconB) {
 			return true
 		}

@@ -1,3 +1,6 @@
+Check // TODOs in files
+
+=====================
 
 Make EucMetrics independent from predefined consts.
 Or not, because EucSimilar thresholds depend on those.

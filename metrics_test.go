@@ -16,16 +16,16 @@ func testProportions(fA, fB string, isSimilar bool,
 	if err != nil {
 		t.Error("Error opening image:", err)
 	}
-	_, sizeA := Icon(imgA)
-	_, sizeB := Icon(imgB)
+	iconA := Icon(imgA, "")
+	iconB := Icon(imgB, "")
 
 	if isSimilar == true {
-		if !PropSimilar(sizeA, sizeB) {
+		if !PropSimilar(iconA, iconB) {
 			t.Errorf("Expecting similarity of %v to %v.", fA, fB)
 		}
 	}
 	if isSimilar == false {
-		if PropSimilar(sizeA, sizeB) {
+		if PropSimilar(iconA, iconB) {
 			t.Errorf("Expecting non-similarity of %v to %v.", fA, fB)
 		}
 	}
@@ -52,12 +52,12 @@ func testEuclidean(fA, fB string, isSimilar bool,
 	if err != nil {
 		t.Error("Error opening image:", err)
 	}
-	iconA, _ := Icon(imgA)
+	iconA := Icon(imgA, "")
 	imgB, err := Open(path.Join(p, fB))
 	if err != nil {
 		t.Error("Error opening image:", err)
 	}
-	iconB, _ := Icon(imgB)
+	iconB := Icon(imgB, "")
 	if isSimilar == true {
 		if !EucSimilar(iconA, iconB) {
 			t.Errorf("Expecting similarity of %v to %v.", fA, fB)
