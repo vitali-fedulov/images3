@@ -3,6 +3,9 @@
 Non-default iconSize makes hash generation complicated. Also needs Custom???
 Or instead deduct iconSize from icon.Pixels lengh everywhere?
 
+BETTER REMOVE CUSTOMIZATION OF iconSize from everywhere.
+This is too specific, I doubt users need it at that point or ever.
+
 =====================
 
 Check // TODOs in files
