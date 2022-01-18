@@ -1,7 +1,9 @@
 package images
 
-// Default Euclidean similarity parameters.
 const (
+
+	// Default Euclidean similarity parameters.
+
 	// Cutoff value for color distance.
 	colorDiff = 50
 	// Cutoff coefficient for Euclidean distance (squared).
@@ -10,15 +12,15 @@ const (
 	chanCoeff = 2
 
 	// Euclidean distance threshold (squared) for Y-channel.
-	euclDist2Y = float32(iconSmallSize*iconSmallSize) *
+	euclDist2Y = float32(defaultIconSize*defaultIconSize) *
 		float32(colorDiff*colorDiff) * euclCoeff
 	// Euclidean distance threshold (squared) for Cb and Cr
 	// channels.
 	euclDist2CbCr = euclDist2Y * chanCoeff
-)
 
-// Default proportion similarity threshold.
-const propThreshold = 0.05
+	// Default proportion similarity threshold.
+	propThreshold = 0.05
+)
 
 // PropSimilar gives a similarity verdict for image A and B based on
 // their height and width. When proportions are similar, it returns
@@ -64,28 +66,39 @@ func PropMetric(iconA, iconB IconT) (m float64) {
 // EucSimilar wraps EucMetrics with default thresholds.
 func EucSimilar(iconA, iconB IconT) bool {
 	m1, m2, m3 := EucMetrics(iconA, iconB)
-	return m1 < euclDist2Y && m2 < euclDist2CbCr && m3 < euclDist2CbCr
+	return m1 < euclDist2Y &&
+		m2 < euclDist2CbCr &&
+		m3 < euclDist2CbCr
 }
 
 // EucMetrics returns Euclidean distances between 2 icons.
 // These are 3 metrics corresponding to each color channel.
 // The distances are squared to avoid square root calculations.
+// EucMetrics assumes default icon size.
 func EucMetrics(iconA, iconB IconT) (m1, m2, m3 float32) {
+	m1, m2, m3 = EucMetricsCustom(iconA, iconB, defaultIconSize)
+	return m1, m2, m3
+}
 
-	numIcon2Pixels := iconSmallSize * iconSmallSize
+// EucMetricsCustom is similar to EucMetrics, except allowing
+// to use non-default icon size.
+func EucMetricsCustom(
+	iconA, iconB IconT, iconSize int) (m1, m2, m3 float32) {
+
+	numPixels := iconSize * iconSize
 	var cA, cB float32
-	for i := 0; i < numIcon2Pixels; i++ {
+	for i := 0; i < numPixels; i++ {
 		// Channel 1.
 		cA = iconA.Pixels[i]
 		cB = iconB.Pixels[i]
 		m1 += (cA - cB) * (cA - cB)
 		// Channel 2.
-		cA = iconA.Pixels[i+numIcon2Pixels]
-		cB = iconB.Pixels[i+numIcon2Pixels]
+		cA = iconA.Pixels[i+numPixels]
+		cB = iconB.Pixels[i+numPixels]
 		m2 += (cA - cB) * (cA - cB)
 		// Channel 3.
-		cA = iconA.Pixels[i+2*numIcon2Pixels]
-		cB = iconB.Pixels[i+2*numIcon2Pixels]
+		cA = iconA.Pixels[i+2*numPixels]
+		cB = iconB.Pixels[i+2*numPixels]
 		m3 += (cA - cB) * (cA - cB)
 	}
 	return m1, m2, m3

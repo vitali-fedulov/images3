@@ -115,14 +115,15 @@ func TestYCbCr(t *testing.T) {
 }
 
 func TestLumaValues(t *testing.T) {
-	icon := NewIcon(iconSmallSize)
+	iconSize := 11
+	icon := NewIcon(iconSize)
 	expectedColor1 := float32(13.1)
 	expectedColor2 := float32(9.1)
-	set(icon, iconSmallSize,
+	set(icon, iconSize,
 		Point{1, 1}, expectedColor1, 29.9, 95.9)
-	set(icon, iconSmallSize,
+	set(icon, iconSize,
 		Point{9, 5}, expectedColor2, 11.0, 12.9)
-	got := LumaValues(icon, []Point{{1, 1}, {9, 5}})
+	got := LumaValues(icon, iconSize, []Point{{1, 1}, {9, 5}})
 	if float32(got[0]) != expectedColor1 ||
 		float32(got[1]) != expectedColor2 {
 		t.Errorf(

@@ -5,26 +5,17 @@ import (
 	"image/color"
 )
 
-// TODO
-// Image resolution of the icon
-// is very small (11x11 pixels): original image details
-// are lost in downsampling, except when source images have
-// very low resolution (e.g. favicons or simple logos).
-
-// Icon parameters.
+// Default icon parameters.
 const (
-	// Side dimension of an intermediate icon. Image will be
-	// resampled to this size. The value is odd to match later
-	// box filter parameters with stride 2.
-	iconLargeSize = 23
-	// Side dimension (in pixels) of a downsample square
-	// to reasonably well approximate color area of a full
-	// size image.
-	sampleSide       = 12
-	invSamplePixels2 = 1 / float32(sampleSide*sampleSide)
-	resizedImgSize   = iconLargeSize * sampleSide
-	iconSmallSize    = iconLargeSize / 2
-	oneNinth         = float32(1) / float32(9)
+	defaultIconSize = 11 // Image resolution of the icon
+	// is very small (11x11 pixels), therefore original
+	// image details are lost in downsampling, except
+	// when source images have very low resolution
+	// (e.g. favicons or simple logos). This is useful
+	// from the privacy perspective if you are to use
+	// generated icons in a large searchable database.
+	defaultSamples = 12
+	defaultNorm    = true
 )
 
 // Icon has square shape. It pixels are float32 values
@@ -40,43 +31,58 @@ type Point image.Point
 
 // Icon generates image signature (icon) with related info. TODO Make a custom icon function for specific size, then use it for Icon11.
 // The icon data can then be stored in a database and used
-// for comparisons. Icon wraps IconNonNorm function
-// by stretching histograms of icons similar to Auto Levels
-// in Photoshop. It is recommended to use this function
-// instead of IconNonNorm, because it showed better
-// results for image comparison, especially for images
-// with large uniform backgrounds (for example pen drawings
-// or images of blue sky with a small object flying).
+// for comparisons. Icon wraps IconCustom function with default
+// well-tested parameters.
 func Icon(img image.Image, path string) IconT {
-	icon := IconNonNorm(img, path)
-	icon.normalize(iconSmallSize) // TODO: Test Icon vs IconNonNorm.
-	return icon                   // TODO: Make sure this one is used in DEMO. Normalize must preserve icon image path and image size. Make tests for these.
+
+	return IconCustom(img, path,
+		defaultIconSize, defaultSamples, defaultNorm)
+
+	// TODO: Make sure this one is used in DEMO. Normalize must preserve icon image path and image size. Make tests for these.
 }
 
-// IconNonNorm is similar to function Icon, except
-// it does not normalize icon histograms. If used instead
-// of Icon, it could produce false positives for images
-// with large uniform backgrounds.
-func IconNonNorm(img image.Image, path string) IconT {
+// IconCustom allows using own (non-default) icon parameters.
+// img is the source image.
+// path is path to the source image file.
+// iconSize is the icon side in pixels.
+// samples is side size of a downsample pixel block to reasonably
+// precisely approximate color area of a full size image.
+// Images containing very few pixels differing from uniform
+// background color require much higher samples-value to compare
+// well, for example in astronomy pictures of the sky.
+// norm switches histogram normalization. The normalization
+// stretches histograms of color channels similar to Auto Levels
+// in Photoshop. Normalization showed better results for image
+// comparison, especially for images with large uniform backgrounds
+// (for example pen drawings on white paper or images of blue sky
+// with a small object flying).
+func IconCustom(img image.Image, path string,
+	iconSize, samples int, norm bool) IconT { // TODO: Test it.
 
-	// Resizing the source image to level-1 icon size approximating
-	// average color values. YCbCr space is used to take advantage
-	// of the luma component.
+	// Resizing to a large icon approximating average color
+	// values of the source image. YCbCr space is used instead
+	// of RGB for better results in image comparison.
 
+	// Side dimension of an intermediate icon. Image will be
+	// resampled to this size. The value is odd to match later
+	// box filter parameters with stride 2.
+	largeIconSize := iconSize*2 + 1
+	resizedImgSize := largeIconSize * samples
+	invSamplePixels2 := 1 / float32(samples*samples)
 	resImg, imgSizeX, imgSizeY :=
 		ResampleByNearest(img, resizedImgSize, resizedImgSize)
-	largeIcon := NewIcon(iconLargeSize)
+	largeIcon := NewIcon(largeIconSize)
 	var r, g, b, sumR, sumG, sumB uint32
 	// For each pixel of the largeIcon.
-	for x := 0; x < iconLargeSize; x++ {
-		for y := 0; y < iconLargeSize; y++ {
+	for x := 0; x < largeIconSize; x++ {
+		for y := 0; y < largeIconSize; y++ {
 			sumR, sumG, sumB = 0, 0, 0
 			// Sum over pixels of resImg.
-			for m := 0; m < sampleSide; m++ {
-				for n := 0; n < sampleSide; n++ {
+			for m := 0; m < samples; m++ {
+				for n := 0; n < samples; n++ {
 					r, g, b, _ =
 						resImg.At(
-							x*sampleSide+m, y*sampleSide+n).RGBA()
+							x*samples+m, y*samples+n).RGBA()
 					sumR += r >> 8
 					sumG += g >> 8
 					sumB += b >> 8
@@ -86,41 +92,47 @@ func IconNonNorm(img image.Image, path string) IconT {
 				float32(sumR)*invSamplePixels2,
 				float32(sumG)*invSamplePixels2,
 				float32(sumB)*invSamplePixels2)
-			set(largeIcon, iconLargeSize,
+			set(largeIcon, largeIconSize,
 				Point{x, y}, yc, cb, cr)
 		}
 	}
 
-	// Box blur filter with resizing to level-2 icon size. TODO Make size constants dependent on only smallest (11 pixels).
+	// Box blur filter with resizing to the final icon of smaller size.
 
-	smallIcon := NewIcon(iconSmallSize)
-	// Pixel positions in the destination icon.
+	icon := NewIcon(iconSize)
+	// Pixel positions in the final icon.
 	var xd, yd int
 	var c1, c2, c3, s1, s2, s3 float32
-	// For pixels of source icon with stride 2.
-	for x := 1; x < iconLargeSize-1; x += 2 {
+	const oneNinth = float32(0.11111111)
+
+	// For pixels of source largeIcon with stride 2.
+	for x := 1; x < largeIconSize-1; x += 2 {
 		xd = x / 2
-		for y := 1; y < iconLargeSize-1; y += 2 {
+		for y := 1; y < largeIconSize-1; y += 2 {
 			yd = y / 2
 			// For each pixel of a 3x3 box.
 			for n := -1; n <= 1; n++ {
 				for m := -1; m <= 1; m++ {
 					c1, c2, c3 =
-						get(largeIcon, iconLargeSize,
+						get(largeIcon, largeIconSize,
 							Point{x + n, y + m})
 					s1, s2, s3 = s1+c1, s2+c2, s3+c3
 				}
 			}
-			set(smallIcon, iconSmallSize, Point{xd, yd},
+			set(icon, iconSize, Point{xd, yd},
 				s1*oneNinth, s2*oneNinth, s3*oneNinth)
 			s1, s2, s3 = 0, 0, 0
 		}
 	}
 
-	smallIcon.ImgSize = Point{imgSizeX, imgSizeY}
-	smallIcon.Path = path
+	icon.ImgSize = Point{imgSizeX, imgSizeY}
+	icon.Path = path
 
-	return smallIcon
+	if norm {
+		icon.normalize(iconSize) // TODO: Test Icon vs IconNonNorm.
+	}
+
+	return icon
 }
 
 func NewIcon(iconSize int) (icon IconT) {
@@ -165,9 +177,9 @@ func yCbCr(r, g, b float32) (yc, cb, cr float32) {
 
 // LumaValues returns luma values at sample pixels of the small icon
 // (from IconSmall).
-func LumaValues(icon IconT, sample []Point) (v []float64) {
+func LumaValues(icon IconT, iconSize int, sample []Point) (v []float64) {
 	for i := range sample {
-		c1, _, _ := get(icon, iconSmallSize, sample[i])
+		c1, _, _ := get(icon, iconSize, sample[i])
 		v = append(v, float64(c1))
 	}
 	return v
@@ -190,10 +202,9 @@ func ToRGBA(icon IconT, size int) *image.RGBA {
 
 // Normalize stretches histograms for the 3 channels of an icon, so that
 // minimum and maximum values of each are 0 and 255 correspondingly.
-// iconSmallSize is the icon side size in pixels.
-func (src IconT) normalize(iconSmallSize int) {
+func (src IconT) normalize(iconSize int) {
 
-	numPixels := iconSmallSize * iconSmallSize
+	numPixels := iconSize * iconSize
 
 	var c1Min, c2Min, c3Min, c1Max, c2Max, c3Max float32
 	c1Min, c2Min, c3Min = 256, 256, 256

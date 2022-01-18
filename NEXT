@@ -1,3 +1,10 @@
+
+
+Non-default iconSize makes hash generation complicated. Also needs Custom???
+Or instead deduct iconSize from icon.Pixels lengh everywhere?
+
+=====================
+
 Check // TODOs in files
 
 =====================
