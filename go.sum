@@ -1,8 +1,6 @@
-github.com/vitali-fedulov/hyper v0.0.0-20211219041032-bde7d6305a11 h1:OCBqtRyuyw1n4OlLINZNA5/63jw7y7SDK6kKqMihmjY=
-github.com/vitali-fedulov/hyper v0.0.0-20211219041032-bde7d6305a11/go.mod h1:nQqkBaCL7ETNg7c90cbfFeJWoKchMrPejZYr+kiuSQI=
-github.com/vitali-fedulov/hyper v0.0.0-20211219233532-c51304014a21 h1:wdWyilAK5++o8mEyZhKp8C2Z1kMFp5SLisYx8ZObP9M=
-github.com/vitali-fedulov/hyper v0.0.0-20211219233532-c51304014a21/go.mod h1:nQqkBaCL7ETNg7c90cbfFeJWoKchMrPejZYr+kiuSQI=
-github.com/vitali-fedulov/hyper v0.0.0-20211220204347-79a425275719 h1:qTw9bYjVdUgTpXDbtTcooIgZ9/ORZTYq9tWbP88ycok=
-github.com/vitali-fedulov/hyper v0.0.0-20211220204347-79a425275719/go.mod h1:nQqkBaCL7ETNg7c90cbfFeJWoKchMrPejZYr+kiuSQI=
-github.com/vitali-fedulov/hyper v0.0.0-20211221045553-13877c5ff9e6 h1:AHRCiNN0LEO6bmwS3upf/stGRpoVsMYPLEc3BTJS6Pg=
-github.com/vitali-fedulov/hyper v0.0.0-20211221045553-13877c5ff9e6/go.mod h1:nQqkBaCL7ETNg7c90cbfFeJWoKchMrPejZYr+kiuSQI=
+github.com/vitali-fedulov/hyper v0.0.0-20211224165312-0d4c3c110c4e h1:H8u+NusWgH+MOdMk8s9JS+WGKCEGQRbiewrL6jJRFhY=
+github.com/vitali-fedulov/hyper v0.0.0-20211224165312-0d4c3c110c4e/go.mod h1:nQqkBaCL7ETNg7c90cbfFeJWoKchMrPejZYr+kiuSQI=
+github.com/vitali-fedulov/hyper v0.0.0-20220119080856-c42552770d99 h1:FOXHUDvcWV/yGaxFNbWs6540V9eU52hmFvgTNI9Pqf0=
+github.com/vitali-fedulov/hyper v0.0.0-20220119080856-c42552770d99/go.mod h1:nQqkBaCL7ETNg7c90cbfFeJWoKchMrPejZYr+kiuSQI=
+github.com/vitali-fedulov/hyper v1.0.0 h1:YVZxAYpz7V1aB2WNHLYWHeJBT9BCLieJhbb3+Ka5wBc=
+github.com/vitali-fedulov/hyper v1.0.0/go.mod h1:nQqkBaCL7ETNg7c90cbfFeJWoKchMrPejZYr+kiuSQI=

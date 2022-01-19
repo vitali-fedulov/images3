@@ -14,13 +14,22 @@ import (
 // a record or a query. When used for a record, you will
 // need a hash set made with HashSet function for a query.
 // And vice versa.
-func CentralHash(
-	icon IconT, hyperPoints []Point, epsPercent float64,
-	numBuckets int) uint64 {
-	return hyper.Decimal(
-		hyper.CentralCube(
-			lumaValues(icon, hyperPoints),
-			0, 255, epsPercent, numBuckets))
+func CentralHash(icon IconT, hyperPoints []Point,
+	epsPercent float64, numBuckets int) uint64 {
+
+	vector := lumaVector(icon, hyperPoints)
+	cube := hyper.CentralCube(vector,
+		hyper.Params{
+			Min:        0,
+			Max:        255,
+			EpsPercent: epsPercent,
+			NumBuckets: numBuckets})
+
+	if numBuckets > 10 || len(hyperPoints) > 19 {
+		return cube.FNV1aHash()
+	}
+
+	return cube.DecimalHash()
 }
 
 // HashSet generates a hash set for a given icon
@@ -30,14 +39,22 @@ func CentralHash(
 // records or a query. When used for a query, you will
 // need a hash made with HashSet function as a record.
 // And vice versa.
-func HashSet(
-	icon IconT, hyperPoints []Point, epsPercent float64,
-	numBuckets int) []uint64 {
-	return hyper.HashSet(
-		hyper.CubeSet(
-			lumaValues(icon, HyperPoints10),
-			0, 255, epsPercent, numBuckets),
-		hyper.Decimal)
+func HashSet(icon IconT, hyperPoints []Point,
+	epsPercent float64, numBuckets int) []uint64 {
+
+	vector := lumaVector(icon, hyperPoints)
+	cubeSet := hyper.CubeSet(vector,
+		hyper.Params{
+			Min:        0,
+			Max:        255,
+			EpsPercent: epsPercent,
+			NumBuckets: numBuckets})
+
+	if numBuckets > 10 || len(hyperPoints) > 19 {
+		return cubeSet.HashSet((hyper.Cube).FNV1aHash)
+	}
+
+	return cubeSet.HashSet((hyper.Cube).DecimalHash)
 }
 
 // HyperPoints10 is a convenience 10-point predefined set with

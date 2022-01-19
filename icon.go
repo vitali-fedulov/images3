@@ -151,8 +151,8 @@ func yCbCr(r, g, b float32) (yc, cb, cr float32) {
 	return yc, cb, cr
 }
 
-// lumaValues returns luma values at sample pixels of the icon.
-func lumaValues(icon IconT, sample []Point) (v []float64) {
+// lumaVector returns luma values at sample pixels of the icon.
+func lumaVector(icon IconT, sample []Point) (v []float64) {
 	for i := range sample {
 		c1, _, _ := get(icon, iconSize, sample[i])
 		v = append(v, float64(c1))
