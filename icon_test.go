@@ -7,13 +7,31 @@ import (
 	"testing"
 )
 
-func TestNewIcon(t *testing.T) {
+func TestSizedIcon(t *testing.T) {
 	icon := sizedIcon(4)
 	expected := 4 * 4 * 3
 	got := len(icon.Pixels)
 	if got != expected {
 		t.Errorf(
 			"Expected length %d, got %d.", expected, got)
+	}
+}
+
+func TestEmptyIcon(t *testing.T) {
+	icon1 := EmptyIcon()
+	icon2 := IconT{nil, Point{0, 0}, ""}
+
+	if !reflect.DeepEqual(icon1.Pixels, icon2.Pixels) {
+		t.Errorf("Icons' Pixels mismatch. They must be equal: %v %v",
+			icon1.Pixels, icon2.Pixels)
+	}
+	if !reflect.DeepEqual(icon1.ImgSize, icon2.ImgSize) {
+		t.Errorf("Icons' ImgSize mismatch. They must be equal: %v %v",
+			icon1.ImgSize, icon2.ImgSize)
+	}
+	if icon1.Path != icon2.Path {
+		t.Errorf("Empty-icon Path must be equal to \"\", instead got %v",
+			icon1.Path)
 	}
 }
 

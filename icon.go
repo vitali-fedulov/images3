@@ -102,7 +102,15 @@ func Icon(img image.Image, path string) IconT {
 	return icon
 }
 
-//
+// EmptyIcon is an icon constructor in case you need an icon
+// with nil values, for example for convenient error handling.
+// Then you can use icon.Pixels == nil condition.
+func EmptyIcon() (icon IconT) {
+	icon = sizedIcon(iconSize)
+	icon.Pixels = nil
+	return icon
+}
+
 func sizedIcon(size int) (icon IconT) {
 	icon.Pixels = make([]float32, size*size*3)
 	return icon
