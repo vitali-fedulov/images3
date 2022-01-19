@@ -126,7 +126,7 @@ func TestHashSet10(t *testing.T) {
 		13332021, 1013332021, 13332121,
 		1013332121, 13332022, 1013332022,
 		13332122, 1013332122}
-	icon2 := NewIcon(11 * 11 * 3)
+	icon2 := sizedIcon(11 * 11 * 3)
 	icon2.Pixels = p2
 	got := HashSet(icon2, HyperPoints10, 0.25, 4)
 	if !reflect.DeepEqual(got, want) {
@@ -134,7 +134,7 @@ func TestHashSet10(t *testing.T) {
 	}
 
 	want = []uint64{0}
-	icon3 := NewIcon(11 * 11 * 3)
+	icon3 := sizedIcon(11 * 11 * 3)
 	icon3.Pixels = p3
 	got = HashSet(icon3, HyperPoints10, 0.25, 4)
 	if !reflect.DeepEqual(got, want) {
@@ -144,7 +144,7 @@ func TestHashSet10(t *testing.T) {
 
 func TestCentralHash10(t *testing.T) {
 	want := uint64(3333333333)
-	icon1 := NewIcon(11 * 11 * 3)
+	icon1 := sizedIcon(11 * 11 * 3)
 	icon1.Pixels = p1
 	got := CentralHash(icon1, HyperPoints10, 0.25, 4)
 	if !reflect.DeepEqual(got, want) {
@@ -152,7 +152,7 @@ func TestCentralHash10(t *testing.T) {
 	}
 
 	want = uint64(13332021)
-	icon2 := NewIcon(11 * 11 * 3)
+	icon2 := sizedIcon(11 * 11 * 3)
 	icon2.Pixels = p2
 	got = CentralHash(icon2, HyperPoints10, 0.25, 4)
 	if !reflect.DeepEqual(got, want) {
@@ -184,6 +184,8 @@ func TestHyperPoints10(t *testing.T) {
 	}
 }
 
+// The test can be brittle, but should be fine, if you rerun it a few times,
+// because point selection is not strict in terms of algorithm performance.
 func TestSelectPoints(t *testing.T) {
 	got := CustomPoints(5)
 	want := map[Point]bool{

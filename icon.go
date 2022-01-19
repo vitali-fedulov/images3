@@ -5,20 +5,23 @@ import (
 	"image/color"
 )
 
-// Default icon parameters.
+// Icon parameters.
 const (
-	defaultIconSize = 11 // Image resolution of the icon
+	iconSize = 11 // Image resolution of the icon
 	// is very small (11x11 pixels), therefore original
 	// image details are lost in downsampling, except
 	// when source images have very low resolution
 	// (e.g. favicons or simple logos). This is useful
 	// from the privacy perspective if you are to use
 	// generated icons in a large searchable database.
-	defaultSamples = 12
-	defaultNorm    = true
+	samples          = 12
+	largeIconSize    = iconSize*2 + 1
+	resizedImgSize   = largeIconSize * samples
+	invSamplePixels2 = 1 / float32(samples*samples)
+	oneNinth         = float32(1) / float32(9)
 )
 
-// Icon has square shape. It pixels are float32 values
+// Icon has square shape. Its pixels are float32 values
 // for 3 channels. Float32 is intentional to preserve color
 // relationships from the full-size image.
 type IconT struct {
@@ -29,49 +32,17 @@ type IconT struct {
 
 type Point image.Point
 
-// Icon generates image signature (icon) with related info. TODO Make a custom icon function for specific size, then use it for Icon11.
+// Icon generates image signature (icon) with related info.
 // The icon data can then be stored in a database and used
-// for comparisons. Icon wraps IconCustom function with default
-// well-tested parameters.
+// for comparisons.
 func Icon(img image.Image, path string) IconT {
-
-	return IconCustom(img, path,
-		defaultIconSize, defaultSamples, defaultNorm)
-
-	// TODO: Make sure this one is used in DEMO. Normalize must preserve icon image path and image size. Make tests for these.
-}
-
-// IconCustom allows using own (non-default) icon parameters.
-// img is the source image.
-// path is path to the source image file.
-// iconSize is the icon side in pixels.
-// samples is side size of a downsample pixel block to reasonably
-// precisely approximate color area of a full size image.
-// Images containing very few pixels differing from uniform
-// background color require much higher samples-value to compare
-// well, for example in astronomy pictures of the sky.
-// norm switches histogram normalization. The normalization
-// stretches histograms of color channels similar to Auto Levels
-// in Photoshop. Normalization showed better results for image
-// comparison, especially for images with large uniform backgrounds
-// (for example pen drawings on white paper or images of blue sky
-// with a small object flying).
-func IconCustom(img image.Image, path string,
-	iconSize, samples int, norm bool) IconT { // TODO: Test it.
 
 	// Resizing to a large icon approximating average color
 	// values of the source image. YCbCr space is used instead
 	// of RGB for better results in image comparison.
-
-	// Side dimension of an intermediate icon. Image will be
-	// resampled to this size. The value is odd to match later
-	// box filter parameters with stride 2.
-	largeIconSize := iconSize*2 + 1
-	resizedImgSize := largeIconSize * samples
-	invSamplePixels2 := 1 / float32(samples*samples)
 	resImg, imgSizeX, imgSizeY :=
 		ResampleByNearest(img, resizedImgSize, resizedImgSize)
-	largeIcon := NewIcon(largeIconSize)
+	largeIcon := sizedIcon(largeIconSize)
 	var r, g, b, sumR, sumG, sumB uint32
 	// For each pixel of the largeIcon.
 	for x := 0; x < largeIconSize; x++ {
@@ -99,11 +70,10 @@ func IconCustom(img image.Image, path string,
 
 	// Box blur filter with resizing to the final icon of smaller size.
 
-	icon := NewIcon(iconSize)
+	icon := sizedIcon(iconSize)
 	// Pixel positions in the final icon.
 	var xd, yd int
 	var c1, c2, c3, s1, s2, s3 float32
-	const oneNinth = float32(0.11111111)
 
 	// For pixels of source largeIcon with stride 2.
 	for x := 1; x < largeIconSize-1; x += 2 {
@@ -127,16 +97,14 @@ func IconCustom(img image.Image, path string,
 
 	icon.ImgSize = Point{imgSizeX, imgSizeY}
 	icon.Path = path
-
-	if norm {
-		icon.normalize(iconSize) // TODO: Test Icon vs IconNonNorm.
-	}
+	icon.normalize(iconSize)
 
 	return icon
 }
 
-func NewIcon(iconSize int) (icon IconT) {
-	icon.Pixels = make([]float32, iconSize*iconSize*3)
+//
+func sizedIcon(size int) (icon IconT) {
+	icon.Pixels = make([]float32, size*size*3)
 	return icon
 }
 
@@ -175,9 +143,8 @@ func yCbCr(r, g, b float32) (yc, cb, cr float32) {
 	return yc, cb, cr
 }
 
-// LumaValues returns luma values at sample pixels of the small icon
-// (from IconSmall).
-func LumaValues(icon IconT, iconSize int, sample []Point) (v []float64) {
+// lumaValues returns luma values at sample pixels of the icon.
+func lumaValues(icon IconT, sample []Point) (v []float64) {
 	for i := range sample {
 		c1, _, _ := get(icon, iconSize, sample[i])
 		v = append(v, float64(c1))
@@ -185,10 +152,10 @@ func LumaValues(icon IconT, iconSize int, sample []Point) (v []float64) {
 	return v
 }
 
-// Auxiliary function, used to evaluate icon-generation
-// functions in a separate program, but not in tests, which
-// could be brittle.
-func ToRGBA(icon IconT, size int) *image.RGBA {
+// ToRGBA transforms a sized icon to image.RGBA. This is
+// an auxiliary function, used to visually evaluate an icon
+// in a separate program (but not in tests, which could be brittle).
+func (icon IconT) ToRGBA(size int) *image.RGBA {
 	img := image.NewRGBA(image.Rect(0, 0, size, size))
 	for x := 0; x < size; x++ {
 		for y := 0; y < size; y++ {
@@ -202,10 +169,9 @@ func ToRGBA(icon IconT, size int) *image.RGBA {
 
 // Normalize stretches histograms for the 3 channels of an icon, so that
 // minimum and maximum values of each are 0 and 255 correspondingly.
-func (src IconT) normalize(iconSize int) {
+func (src IconT) normalize(size int) {
 
-	numPixels := iconSize * iconSize
-
+	numPixels := size * size
 	var c1Min, c2Min, c3Min, c1Max, c2Max, c3Max float32
 	c1Min, c2Min, c3Min = 256, 256, 256
 	c1Max, c2Max, c3Max = 0, 0, 0

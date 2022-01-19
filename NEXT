@@ -1,42 +1,5 @@
 
 
-Non-default iconSize makes hash generation complicated. Also needs Custom???
-Or instead deduct iconSize from icon.Pixels lengh everywhere?
-
-BETTER REMOVE CUSTOMIZATION OF iconSize from everywhere.
-This is too specific, I doubt users need it at that point or ever.
-
-=====================
-
-Check // TODOs in files
-
-=====================
-
-Make EucMetrics independent from predefined consts.
-Or not, because EucSimilar thresholds depend on those.
-Alternatively make an optional argument of thresholds params to EucSimilar.
-
-=====================
-
-Should func IconSmall return normalized values (as now)?
-Or normalized should be checked separately in metrics, for example?
-
-==============================================
-
-
-Review all files and set to non-exported all non-universal items.
-I.e. those that I do not want to support long term.
-
-For sure hide ResampleByNearest and its consumer, because maybe
-later will optimize for direct ycbr reading or something.
-So inputs might change.
-
-
-==============================================
-
-
-Introduce methods and interfaces? Maybe for package hyper???
-
 
 ==============================================
 

@@ -8,7 +8,7 @@ import (
 )
 
 func TestNewIcon(t *testing.T) {
-	icon := NewIcon(4)
+	icon := sizedIcon(4)
 	expected := 4 * 4 * 3
 	got := len(icon.Pixels)
 	if got != expected {
@@ -43,9 +43,9 @@ func TestArrIndex(t *testing.T) {
 }
 
 func TestSet(t *testing.T) {
-	icon := NewIcon(4)
+	icon := sizedIcon(4)
 	set(icon, 4, Point{1, 1}, 13.5, 29.9, 95.9)
-	expected := NewIcon(4 * 4 * 3)
+	expected := sizedIcon(4 * 4 * 3)
 	expected.Pixels = []float32{0, 0, 0, 0, 0, 13.5, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29.9, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 95.9, 0, 0, 0,
@@ -56,7 +56,7 @@ func TestSet(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
-	icon := NewIcon(4 * 4 * 3)
+	icon := sizedIcon(4 * 4 * 3)
 	icon.Pixels = []float32{0, 0, 0, 0, 0, 13.5, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 29.9, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 95.9, 0, 0, 0, 0,
@@ -116,14 +116,14 @@ func TestYCbCr(t *testing.T) {
 
 func TestLumaValues(t *testing.T) {
 	iconSize := 11
-	icon := NewIcon(iconSize)
+	icon := sizedIcon(iconSize)
 	expectedColor1 := float32(13.1)
 	expectedColor2 := float32(9.1)
 	set(icon, iconSize,
 		Point{1, 1}, expectedColor1, 29.9, 95.9)
 	set(icon, iconSize,
 		Point{9, 5}, expectedColor2, 11.0, 12.9)
-	got := LumaValues(icon, iconSize, []Point{{1, 1}, {9, 5}})
+	got := lumaValues(icon, []Point{{1, 1}, {9, 5}})
 	if float32(got[0]) != expectedColor1 ||
 		float32(got[1]) != expectedColor2 {
 		t.Errorf(
@@ -146,11 +146,11 @@ func testNormalize(src, want IconT, t *testing.T) {
 func TestNormalize(t *testing.T) {
 
 	// 2x2 icon.
-	src := NewIcon(2)
+	src := sizedIcon(2)
 	src.Pixels = []float32{0.5, 89, 14, 211,
 		9, 193, 20, 14, 97, 31, 7, 67.9}
 	src.normalize(2)
-	want := NewIcon(2)
+	want := sizedIcon(2)
 	want.Pixels = []float32{
 		0, 107.20902, 16.35392, 255, 0, 255,
 		15.244565, 6.929348, 255, 68, 0, 172.55}

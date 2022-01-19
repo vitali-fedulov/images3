@@ -19,7 +19,7 @@ func CentralHash(
 	numBuckets int) uint64 {
 	return hyper.Decimal(
 		hyper.CentralCube(
-			LumaValues(icon, hyperPoints),
+			lumaValues(icon, hyperPoints),
 			0, 255, epsPercent, numBuckets))
 }
 
@@ -35,7 +35,7 @@ func HashSet(
 	numBuckets int) []uint64 {
 	return hyper.HashSet(
 		hyper.CubeSet(
-			LumaValues(icon, HyperPoints10),
+			lumaValues(icon, HyperPoints10),
 			0, 255, epsPercent, numBuckets),
 		hyper.Decimal)
 }
@@ -84,8 +84,8 @@ func CustomPoints(n int) map[Point]bool {
 	for len(pts) < n {
 		// Sums of distances for each x, y to already pts points.
 		d := make(map[Point]float64)
-		for x := margin; x < iconSmallSize-margin; x++ {
-			for y := margin; y < iconSmallSize-margin; y++ {
+		for x := margin; x < iconSize-margin; x++ {
+			for y := margin; y < iconSize-margin; y++ {
 				if _, ok := pts[Point{x, y}]; ok {
 					continue
 				}
@@ -107,8 +107,8 @@ func CustomPoints(n int) map[Point]bool {
 		for p0 := range pts {
 			pts0 := exclude(p0, pts)
 			d := make(map[Point]float64)
-			for x := margin; x < iconSmallSize-margin; x++ {
-				for y := margin; y < iconSmallSize-margin; y++ {
+			for x := margin; x < iconSize-margin; x++ {
+				for y := margin; y < iconSize-margin; y++ {
 					if _, ok := pts0[Point{x, y}]; ok {
 						continue
 					}
