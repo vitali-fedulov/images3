@@ -1,6 +1,8 @@
+Do last test locally and tag major release as "latest".
 
+====================================
 
-README with new examples
+README
 
 Add a line linking to Documentation: [godoc](https://pkg.go.dev/github.com/vitali-fedulov/images/v2).
 

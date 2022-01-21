@@ -53,9 +53,9 @@ func main() {
 Summary: Images are resized to small squares of fixed size (here called "icon"). A number of masks representing several sample pixels are run against the resized images to calculate average color values. Then Euclidean distance between the icons is used to give the similarity verdict. Also image proportions are used to avoid matching images of distinct shape.
 
 
-## Example of comparing 2 photos using hashes instead of Euclidean distance
+## Example of comparing 2 photos using hashes
 
-Hash-based comparison provides rough approximation of image similarity. After that use func `Similar` to get the final verdict. The demo shows only the hash-based similarity testing.
+Hash-based comparison provides fast and RAM-friendly rough approximation of image similarity, when you need to process millions of images. After matching hashes use func `Similar` to get the final verdict. The demo shows only the hash-based similarity testing in its simplified form (without using actual hash table).
 
 ```go
 package main
