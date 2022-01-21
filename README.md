@@ -15,7 +15,6 @@ The library also contains basic functions to open/save/resize images.
 
 ## Example of comparing 2 photos with func Similar
 
-
 ```go
 package main
 
@@ -25,17 +24,21 @@ import (
 )
 
 func main() {
-	
-	// Open photos.
-	imgA, _ := images.Open("photoA.jpg")
-	imgB, _ := images.Open("photoB.jpg")
-	
-	// Calculate hashes and image sizes.
-	hashA, imgSizeA := images.Hash(imgA)
-	hashB, imgSizeB := images.Hash(imgB)
-	
+
+	// Paths to photos.
+	const path1 = "1.jpg"
+	const path2 = "2.jpg"
+
+	// Open photos (skipping error handling for clarity).
+	img1, _ := images3.Open(path1)
+	img2, _ := images3.Open(path2)
+
+	// Make icons. They are compact image representations.
+	icon1 := images3.Icon(img1, path1)
+	icon2 := images3.Icon(img2, path2)
+
 	// Image comparison.
-	if images.Similar(hashA, hashB, imgSizeA, imgSizeB) {
+	if images3.Similar(icon1, icon2) {
 		fmt.Println("Images are similar.")
 	} else {
 		fmt.Println("Images are distinct.")
@@ -47,8 +50,71 @@ func main() {
 
 [Detailed explanation with illustrations](https://vitali-fedulov.github.io/algorithm-for-perceptual-image-comparison.html).
 
-Summary: In the algorithm images are resized to small squares of fixed size.
-A number of masks representing several sample pixels are run against the resized
-images to calculate average color values. Then the values are compared to
-give the similarity verdict. Also image proportions are used to avoid matching
+Summary: In the algorithm images are resized to small squares of fixed size (here called "icon"). A number of masks representing several sample pixels are run against the resized images to calculate average color values. Then the values are compared to give the similarity verdict. Also image proportions are used to avoid matching
 images of distinct shape.
+
+
+## Example of comparing 2 photos using hashes instead of Euclidean distance
+
+Hash-based comparison provides rough approximation of image similarity. After that use func `Similar` to get the final verdict. The demo shows only the hash-based similarity testing.
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/vitali-fedulov/images3"
+)
+
+func main() {
+
+const (
+		// Paths to photos.
+		path1 = "1.jpg"
+		path2 = "2.jpg"
+
+		// Hyper space parameters.
+		epsPct     = 0.25
+		numBuckets = 4
+	)
+
+	// Open photos (skipping error handling for clarity).
+	img1, _ := images3.Open(path1)
+	img2, _ := images3.Open(path2)
+
+	// Make icons. They are image representations for comparison.
+	icon1 := images3.Icon(img1, path1)
+	icon2 := images3.Icon(img2, path2)
+
+	// Hash table values.
+
+	// Value to save to the hash table as a key with corresponding
+	// image ids. Table structure: map[centralHash][]imageId.
+	// imageId is simply an image number in a directory tree.
+	centralHash := images3.CentralHash(
+		icon1, images3.HyperPoints10, epsPct, numBuckets)
+
+	// Hash set to be used as a query to the hash table. Each hash from
+	// the hashSet has to be checked against the hash table.
+	// Thus it is not a hash-to-hash test but hash-from-hashSet-to-hash
+	// to get similar images. See more info in package hyper README.
+	hashSet := images3.HashSet(
+		icon2, images3.HyperPoints10, epsPct, numBuckets)
+
+	// Checking hash matches. In full implementation this will
+	// be done on the hash table map[centralHash][]imageId.
+	foundSimilarImage := false
+	for _, hash := range hashSet {
+		if centralHash == hash {
+			foundSimilarImage = true
+		}
+	}
+
+	// Image comparison result.
+	if foundSimilarImage {
+		fmt.Println("Images are similar.")
+	} else {
+		fmt.Println("Images are distinct.")
+	}
+}
+```
