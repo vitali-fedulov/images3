@@ -1,4 +1,4 @@
-module github.com/vitali-fedulov/images
+module github.com/vitali-fedulov/images3
 
 go 1.16
 
