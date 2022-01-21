@@ -23,19 +23,18 @@ const (
 // and proportion similarity.
 func Similar(iconA, iconB IconT) bool {
 
-	if PropSimilar(iconA, iconB) {
-
-		if EucSimilar(iconA, iconB) {
+	if propSimilar(iconA, iconB) {
+		if eucSimilar(iconA, iconB) {
 			return true
 		}
 	}
 	return false
 }
 
-// PropSimilar gives a similarity verdict for image A and B based on
+// propSimilar gives a similarity verdict for image A and B based on
 // their height and width. When proportions are similar, it returns
 // true.
-func PropSimilar(iconA, iconB IconT) bool {
+func propSimilar(iconA, iconB IconT) bool {
 	return PropMetric(iconA, iconB) < thProp
 }
 
@@ -69,12 +68,12 @@ func PropMetric(iconA, iconB IconT) (m float64) {
 	return m
 }
 
-// EucSimilar gives a similarity verdict for image A and B based
+// eucSimilar gives a similarity verdict for image A and B based
 // on Euclidean distance between pixel values of their icons.
 // When the distance is small, the function returns true.
 // iconA and iconB are generated with the Icon function.
-// EucSimilar wraps EucMetric with well-tested thresholds.
-func EucSimilar(iconA, iconB IconT) bool {
+// eucSimilar wraps EucMetric with well-tested thresholds.
+func eucSimilar(iconA, iconB IconT) bool {
 
 	m1, m2, m3 := EucMetric(iconA, iconB)
 	return m1 < thY && m2 < thCbCr && m3 < thCbCr

@@ -20,12 +20,12 @@ func testPropSimilar(fA, fB string, isSimilar bool,
 	iconB := Icon(imgB, "")
 
 	if isSimilar == true {
-		if !PropSimilar(iconA, iconB) {
+		if !propSimilar(iconA, iconB) {
 			t.Errorf("Expecting similarity of %v to %v.", fA, fB)
 		}
 	}
 	if isSimilar == false {
-		if PropSimilar(iconA, iconB) {
+		if propSimilar(iconA, iconB) {
 			t.Errorf("Expecting non-similarity of %v to %v.", fA, fB)
 		}
 	}
@@ -59,12 +59,12 @@ func testEucSimilar(fA, fB string, isSimilar bool,
 	}
 	iconB := Icon(imgB, "")
 	if isSimilar == true {
-		if !EucSimilar(iconA, iconB) {
+		if !eucSimilar(iconA, iconB) {
 			t.Errorf("Expecting similarity of %v to %v.", fA, fB)
 		}
 	}
 	if isSimilar == false {
-		if EucSimilar(iconA, iconB) {
+		if eucSimilar(iconA, iconB) {
 			t.Errorf("Expecting non-similarity of %v to %v.", fA, fB)
 		}
 	}
