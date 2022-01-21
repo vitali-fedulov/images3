@@ -121,7 +121,7 @@ var p3 = []float32{
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0}
 
-func TestHashSet10(t *testing.T) {
+func TestHashSet(t *testing.T) {
 	want := []uint64{
 		13332021, 1013332021, 13332121,
 		1013332121, 13332022, 1013332022,
@@ -142,7 +142,7 @@ func TestHashSet10(t *testing.T) {
 	}
 }
 
-func TestCentralHash10(t *testing.T) {
+func TestCentralHash(t *testing.T) {
 	want := uint64(3333333333)
 	icon1 := sizedIcon(11 * 11 * 3)
 	icon1.Pixels = p1

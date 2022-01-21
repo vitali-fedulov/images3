@@ -1,47 +1,34 @@
 # Comparing images in Go
 
-Near duplicates and resized images can be found with the package. Function `Open` by default support GIF, JPEG and PNG (golang.org/pkg/image/ as in October 2018). There is only one dependency from my another package [hyper](https://github.com/vitali-fedulov/hyper).
+Near duplicates and resized images can be found with the package. Function `Open` supports JPEG, PNG and GIF (Go image-package default). But other image types are possible through third-party libraries, because the input for processing is simply image.Image, as you can see in the examples below.
 
-**Demo**: [similar image search and clustering](https://similar.pictures) (deployed [from](https://github.com/vitali-fedulov/vitali-fedulov.github.io)).
+There is only one dependency: my package [hyper](https://github.com/vitali-fedulov/hyper).
 
-`Similar` function gives a verdict whether 2 images are similar or not. The library also contains wrapper functions to open/save images and basic image resampling/resizing.
+**Demo**: [Similar image search and clustering](https://similar.pictures).
 
-Documentation: [godoc](https://pkg.go.dev/github.com/vitali-fedulov/images/v2).
+`Similar` function gives a verdict whether 2 images are similar or not, based on package-default thresholds. If instead you need similarity metrics and choose your own thresholds, use functions `PropMetric` and `EucMetric`.
 
-## Example of comparing 2 photos
+If you are planning to process millions of images, comparing images with `Similar` directly may be slow and consume a lot of RAM to keep all icons in memory. To address the problem use a hash table as a preliminary filter (func `CentralHash` and `HashSet`) and read icons by their ids from hard drives. [More info](https://vitali-fedulov.github.io/algorithm-for-hashing-high-dimensional-float-vectors.html) on the hyperspace hashes used in the package.
 
-To test this example go-file, you need to initialize modules from command line, because the latest version (v2) uses them:
+The library also contains basic functions to open/save/resize images.
 
-`go mod init foo`
 
-Here `foo` can be anything for testing purposes. Then get the required import:
+## Example of comparing 2 photos with func Similar
 
-`go get github.com/vitali-fedulov/images/v2`
-
-Now you are ready to run or build the example.
 
 ```go
 package main
 
 import (
 	"fmt"
-
-	// Notice v2, which is module-based most recent version.
-	// Explanation: https://go.dev/blog/v2-go-modules
-	"github.com/vitali-fedulov/images/v2"
+	"github.com/vitali-fedulov/images3"
 )
 
 func main() {
 	
 	// Open photos.
-	imgA, err := images.Open("photoA.jpg")
-	if err != nil {
-		panic(err)
-	}
-	imgB, err := images.Open("photoB.jpg")
-	if err != nil {
-		panic(err)
-	}
+	imgA, _ := images.Open("photoA.jpg")
+	imgB, _ := images.Open("photoB.jpg")
 	
 	// Calculate hashes and image sizes.
 	hashA, imgSizeA := images.Hash(imgA)

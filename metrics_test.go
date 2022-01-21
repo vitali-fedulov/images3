@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func testProportions(fA, fB string, isSimilar bool,
+func testPropSimilar(fA, fB string, isSimilar bool,
 	t *testing.T) {
 	p := path.Join("testdata", "proportions")
 	imgA, err := Open(path.Join(p, fA))
@@ -31,21 +31,21 @@ func testProportions(fA, fB string, isSimilar bool,
 	}
 }
 
-func TestSimilarByProportions(t *testing.T) {
-	testProportions("100x130.png", "100x124.png", true, t)
-	testProportions("100x130.png", "100x122.png", false, t)
-	testProportions("130x100.png", "260x200.png", true, t)
-	testProportions("200x200.png", "260x200.png", false, t)
-	testProportions("130x100.png", "124x100.png", true, t)
-	testProportions("130x100.png", "122x100.png", false, t)
-	testProportions("130x100.png", "130x100.png", true, t)
-	testProportions("100x130.png", "130x100.png", false, t)
-	testProportions("124x100.png", "260x200.png", true, t)
-	testProportions("122x100.png", "260x200.png", false, t)
-	testProportions("100x124.png", "100x130.png", true, t)
+func TestPropSimilar(t *testing.T) {
+	testPropSimilar("100x130.png", "100x124.png", true, t)
+	testPropSimilar("100x130.png", "100x122.png", false, t)
+	testPropSimilar("130x100.png", "260x200.png", true, t)
+	testPropSimilar("200x200.png", "260x200.png", false, t)
+	testPropSimilar("130x100.png", "124x100.png", true, t)
+	testPropSimilar("130x100.png", "122x100.png", false, t)
+	testPropSimilar("130x100.png", "130x100.png", true, t)
+	testPropSimilar("100x130.png", "130x100.png", false, t)
+	testPropSimilar("124x100.png", "260x200.png", true, t)
+	testPropSimilar("122x100.png", "260x200.png", false, t)
+	testPropSimilar("100x124.png", "100x130.png", true, t)
 }
 
-func testEuclidean(fA, fB string, isSimilar bool,
+func testEucSimilar(fA, fB string, isSimilar bool,
 	t *testing.T) {
 	p := path.Join("testdata", "euclidean")
 	imgA, err := Open(path.Join(p, fA))
@@ -70,8 +70,8 @@ func testEuclidean(fA, fB string, isSimilar bool,
 	}
 }
 
-func TestSimilarByEuclidean(t *testing.T) {
-	testEuclidean("large.jpg", "distorted.jpg", true, t)
-	testEuclidean("large.jpg", "flipped.jpg", false, t)
-	testEuclidean("large.jpg", "small.jpg", true, t)
+func TestEucSimilar(t *testing.T) {
+	testEucSimilar("large.jpg", "distorted.jpg", true, t)
+	testEucSimilar("large.jpg", "flipped.jpg", false, t)
+	testEucSimilar("large.jpg", "small.jpg", true, t)
 }

@@ -15,9 +15,22 @@ const (
 	// Euclidean distance threshold (squared) for Cb and Cr channels.
 	thCbCr = thY * chanCoeff
 
-	// Proportion similarity threshold.
+	// Proportion similarity threshold 5%.
 	thProp = 0.05
 )
+
+// Similar returns similarity verdict based on Euclidean
+// and proportion similarity.
+func Similar(iconA, iconB IconT) bool {
+
+	if PropSimilar(iconA, iconB) {
+
+		if EucSimilar(iconA, iconB) {
+			return true
+		}
+	}
+	return false
+}
 
 // PropSimilar gives a similarity verdict for image A and B based on
 // their height and width. When proportions are similar, it returns
@@ -60,18 +73,19 @@ func PropMetric(iconA, iconB IconT) (m float64) {
 // on Euclidean distance between pixel values of their icons.
 // When the distance is small, the function returns true.
 // iconA and iconB are generated with the Icon function.
-// EucSimilar wraps EucMetrics with well-tested thresholds.
+// EucSimilar wraps EucMetric with well-tested thresholds.
 func EucSimilar(iconA, iconB IconT) bool {
 
-	m1, m2, m3 := EucMetrics(iconA, iconB)
-
+	m1, m2, m3 := EucMetric(iconA, iconB)
 	return m1 < thY && m2 < thCbCr && m3 < thCbCr
 }
 
-// EucMetrics returns Euclidean distances between 2 icons.
+// EucMetric returns Euclidean distances between 2 icons.
 // These are 3 metrics corresponding to each color channel.
 // The distances are squared to avoid square root calculations.
-func EucMetrics(iconA, iconB IconT) (m1, m2, m3 float32) {
+// Note that the channels are not RGB, but YCbCr, thus their
+// importance for similarity might be not the same.
+func EucMetric(iconA, iconB IconT) (m1, m2, m3 float32) {
 
 	numIconPixels := iconSize * iconSize
 	var cA, cB float32

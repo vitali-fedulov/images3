@@ -1,37 +1,34 @@
 
-Modify hashes.go to reflect changes in hyper
 
-==============================================
+README with new examples
 
-Rewrite README with new examples
+Add a line linking to Documentation: [godoc](https://pkg.go.dev/github.com/vitali-fedulov/images/v2).
+
+Put a large message in README of /images redirecting to the new major version /images3.
 
 =====================================
 
+Rewrite similar.pictures explanation on icons etc. -> referenced in last lines of README.
 
 
-Verify that there are no cases when inner loop of Similar02 would produce
-more than 1 ids slices. Thus immediate return should not be used,
-instead accumulating and merging ids.
+***************************************************************************************
+***************************************************************************************
+***************************************************************************************
 
-----------------------------------------
+
 
 Add functions for identical files?
 E.g. similarity by file size, pixel by pixel, and fast checksum.
 
-Thumbnail extractor function similar to JS version?
-
-Refactor a testing program to run against a large image set.
-
------------------------------------------
+============================================
 
 Maybe add a jpeg thumbnail reader for fast scans like in www version.
-
 
 ===============================================
 
 Possible optimization (maybe not that important for speed):
 
-Maybe decode Jpeg directly to YCbCr with function
+Decode Jpeg directly to YCbCr with function
 func (p *YCbCr) YCbCrAt(x, y int) color.YCbCr
 where type YCbCr struct {
 	Y, Cb, Cr uint8        <<< Look, no alpha at all. But some Jpegs return Gray
@@ -48,10 +45,8 @@ if img.ColorModel() == color.YCbCrModel {
     ....
 }
 
-
 VERIFY that majority of images are actually 
 img.ColorModel() == color.YCbCrModel
-
 
 func DecodeConfig(r io.Reader) (image.Config, error)
 DecodeConfig returns the color model and dimensions of a PNG image without decoding the entire image.

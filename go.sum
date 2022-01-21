@@ -1,6 +1,2 @@
-github.com/vitali-fedulov/hyper v0.0.0-20211224165312-0d4c3c110c4e h1:H8u+NusWgH+MOdMk8s9JS+WGKCEGQRbiewrL6jJRFhY=
-github.com/vitali-fedulov/hyper v0.0.0-20211224165312-0d4c3c110c4e/go.mod h1:nQqkBaCL7ETNg7c90cbfFeJWoKchMrPejZYr+kiuSQI=
-github.com/vitali-fedulov/hyper v0.0.0-20220119080856-c42552770d99 h1:FOXHUDvcWV/yGaxFNbWs6540V9eU52hmFvgTNI9Pqf0=
-github.com/vitali-fedulov/hyper v0.0.0-20220119080856-c42552770d99/go.mod h1:nQqkBaCL7ETNg7c90cbfFeJWoKchMrPejZYr+kiuSQI=
-github.com/vitali-fedulov/hyper v1.0.0 h1:YVZxAYpz7V1aB2WNHLYWHeJBT9BCLieJhbb3+Ka5wBc=
-github.com/vitali-fedulov/hyper v1.0.0/go.mod h1:nQqkBaCL7ETNg7c90cbfFeJWoKchMrPejZYr+kiuSQI=
+github.com/vitali-fedulov/hyper v1.0.1 h1:juW5AgxqAVbAAlakTcc1IeO/iqT8R+KdIyia8tz29zE=
+github.com/vitali-fedulov/hyper v1.0.1/go.mod h1:nQqkBaCL7ETNg7c90cbfFeJWoKchMrPejZYr+kiuSQI=
