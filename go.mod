@@ -1,4 +1,4 @@
-module images3
+module github.com/vitali-fedulov/images
 
 go 1.16
 
