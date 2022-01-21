@@ -5,6 +5,8 @@ Do last test v1.0.6 locally and tag major release as "latest".
 
 README
 
+Link to previous version, so newcomes find the stars etc.
+
 Add a line linking to Documentation: [godoc](https://pkg.go.dev/github.com/vitali-fedulov/images/v2).
 
 Put a large message in README of /images redirecting to the new major version /images3.
