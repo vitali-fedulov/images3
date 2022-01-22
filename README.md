@@ -12,6 +12,8 @@ If you work with millions of images, using func `Similar` directly could be slow
 
 The package also contains basic functions to open/save/resize images.
 
+[Go doc](https://pkg.go.dev/github.com/vitali-fedulov/images3) for code reference.
+
 
 ## Example of comparing 2 photos with func Similar
 
