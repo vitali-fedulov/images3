@@ -1,16 +1,16 @@
 # Comparing images in Go
 
-Near duplicates and resized images can be found with the package. Function `Open` supports JPEG, PNG and GIF (Go image-package default). But other image types are possible through third-party libraries, because the input for func `Icon` is simply image.Image.
+Near duplicates and resized images can be found with the package. Function `Open` supports JPEG, PNG and GIF (Go image-package default). But other image types are possible through third-party libraries, because the input for func `Icon` is simply image.Image. There is only one dependency: my another package [hyper](https://github.com/vitali-fedulov/hyper).
+
+This is a major version 3 of module [images](https://github.com/vitali-fedulov/images).
 
 **Demo**: [Similar image search and clustering](https://similar.pictures).
 
-There is only one dependency: my package [hyper](https://github.com/vitali-fedulov/hyper).
+`Similar` function gives a verdict whether 2 images are similar based on Euclidean distance between specially constructed signatures ("icons") and package-default thresholds. If you prefer similarity metrics and choose your own thresholds, use functions `PropMetric` and `EucMetric`.
 
-`Similar` function gives a verdict whether 2 images are similar or not, based on package-default thresholds. If instead you need similarity metrics and choose your own thresholds, use functions `PropMetric` and `EucMetric`.
+If you work with millions of images, using func `Similar` directly could be slow and consume a lot of RAM to keep icons in memory. To address the problem use a hash table as a preliminary filter (see example 2 below). [More info](https://vitali-fedulov.github.io/algorithm-for-hashing-high-dimensional-float-vectors.html) on the hyperspace hashes.
 
-If you are planning to process millions of images, comparing images with `Similar` directly may be slow and consume a lot of RAM to keep all icons in memory. To address the problem use a hash table as a preliminary filter (func `CentralHash` and `HashSet`) and read icons by their ids from the hard drive. [More info](https://vitali-fedulov.github.io/algorithm-for-hashing-high-dimensional-float-vectors.html) on the hyperspace hashes.
-
-The library also contains basic functions to open/save/resize images.
+The package also contains basic functions to open/save/resize images.
 
 
 ## Example of comparing 2 photos with func Similar
