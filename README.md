@@ -2,7 +2,7 @@
 
 Near duplicates and resized images can be found with the package. Function `Open` supports JPEG, PNG and GIF (Go image-package default). But other image types are possible through third-party libraries, because the input for func `Icon` is simply image.Image. There is only one dependency: my another package [hyper](https://github.com/vitali-fedulov/hyper).
 
-**This is the LATEST version** of older module [images](https://github.com/vitali-fedulov/images).
+**This is the LATEST major version** of module [images](https://github.com/vitali-fedulov/images).
 
 **Demo**: [Similar image search and clustering](https://similar.pictures).
 
