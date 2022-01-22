@@ -1,8 +1,4 @@
 
-Rework image.go:
-- resample to resize
-- reshape to methods ToJpeg, ToPng.
-
 
 Do last test v1.0.7 locally and tag major release as "latest".
 

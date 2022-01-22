@@ -23,9 +23,9 @@ func Open(path string) (img image.Image, err error) {
 	return img, err
 }
 
-// ResampleByNearest resizes an image by the nearest neighbour method to the
+// ResizeByNearest resizes an image by the nearest neighbour method to the
 // output size outX, outY. It also returns the size inX, inY of the input image.
-func ResampleByNearest(src image.Image, dstX, dstY int) (dst image.RGBA,
+func ResizeByNearest(src image.Image, dstX, dstY int) (dst image.RGBA,
 	srcX, srcY int) {
 	// Original image size.
 	xMax, xMin := src.Bounds().Max.X, src.Bounds().Min.X
@@ -52,8 +52,8 @@ func ResampleByNearest(src image.Image, dstX, dstY int) (dst image.RGBA,
 	return dst, srcX, srcY
 }
 
-// Png encodes and saves image.RGBA to a file.
-func Png(img *image.RGBA, path string) {
+// SaveToPNG encodes and saves image.RGBA to a file.
+func SaveToPNG(img *image.RGBA, path string) {
 	if destFile, err := os.Create(path); err != nil {
 		log.Println("Cannot create file: ", path, err)
 	} else {
@@ -62,8 +62,8 @@ func Png(img *image.RGBA, path string) {
 	}
 }
 
-// Jpg encodes and saves image.RGBA to a file.
-func Jpg(img *image.RGBA, path string, quality int) {
+// SaveToJPG encodes and saves image.RGBA to a file.
+func SaveToJPG(img *image.RGBA, path string, quality int) {
 	if destFile, err := os.Create(path); err != nil {
 		log.Println("Cannot create file: ", path, err)
 	} else {

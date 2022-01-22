@@ -41,7 +41,7 @@ func Icon(img image.Image, path string) IconT {
 	// values of the source image. YCbCr space is used instead
 	// of RGB for better results in image comparison.
 	resImg, imgSizeX, imgSizeY :=
-		ResampleByNearest(img, resizedImgSize, resizedImgSize)
+		ResizeByNearest(img, resizedImgSize, resizedImgSize)
 	largeIcon := sizedIcon(largeIconSize)
 	var r, g, b, sumR, sumG, sumB uint32
 	// For each pixel of the largeIcon.

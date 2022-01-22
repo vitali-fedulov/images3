@@ -12,7 +12,7 @@ const (
 	testDir2 = "resample"
 )
 
-func TestResampleByNearest(t *testing.T) {
+func TestResizeByNearest(t *testing.T) {
 	testDir := path.Join(testDir1, testDir2)
 	tables := []struct {
 		inFile     string
@@ -35,7 +35,7 @@ func TestResampleByNearest(t *testing.T) {
 		if err != nil {
 			t.Error("Cannot decode", path.Join(testDir, table.outFile))
 		}
-		resampled, srcX, srcY := ResampleByNearest(inImg,
+		resampled, srcX, srcY := ResizeByNearest(inImg,
 			table.dstX, table.dstY)
 		if !reflect.DeepEqual(
 			outImg.(*image.RGBA), &resampled) || table.srcX != srcX ||
