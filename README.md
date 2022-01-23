@@ -6,11 +6,13 @@ Near duplicates and resized images can be found with the package. Function `Open
 
 **Demo**: [Similar image search and clustering](https://similar.pictures).
 
-`Similar` function gives a verdict whether 2 images are similar based on Euclidean distance between specially constructed signatures ("icons") and package-default thresholds. If you prefer similarity metrics and choose your own thresholds, use functions `PropMetric` and `EucMetric`.
+`Similar` function gives a verdict whether 2 images are similar based on Euclidean distance between specially constructed signatures ("icons") and package-default thresholds. If you prefer your own thresholds or sort by similarity metrics, use functions `PropMetric` and `EucMetric` to get metric values.
 
 If you work with millions of images, using func `Similar` directly could be slow and consume a lot of RAM to keep icons in memory. To address the problem use a hash table as a preliminary filter (see example 2 below). [More info](https://vitali-fedulov.github.io/algorithm-for-hashing-high-dimensional-float-vectors.html) on the hyperspace hashes.
 
 The package also contains basic functions to open/save/resize images.
+
+Since icon is tiny compressed representation of the whole large image, in some cases you may want to increase precision by comparing image sub-parts. For that you can generate your own image.Image for image sub-parts and compare icons for those sub-parts.
 
 [Go doc](https://pkg.go.dev/github.com/vitali-fedulov/images3) for code reference.
 
@@ -52,7 +54,7 @@ func main() {
 
 [Detailed explanation with illustrations](https://vitali-fedulov.github.io/algorithm-for-perceptual-image-comparison.html).
 
-Summary: Images are resized to small squares of fixed size (here called "icon"). A number of masks representing several sample pixels are run against the resized images to calculate average color values. Then Euclidean distance between the icons is used to give the similarity verdict. Also image proportions are used to avoid matching images of distinct shape.
+Summary: Images are resized to small squares of fixed size (here called "icon"). A box filter is run against the resized images to calculate average color values. Then Euclidean distance between the icons is used to give the similarity verdict. Also image proportions are used to avoid matching images of distinct shape.
 
 
 ## Example of comparing 2 photos using hashes

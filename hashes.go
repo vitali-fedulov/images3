@@ -8,12 +8,13 @@ import (
 )
 
 // CentralHash generates a central hash for a given icon
-// by sampling luma values of well-distributed icon points
-// (see var HyperPoints10 to understand how) and later using
-// hyper package functions. This hash can then be used for
-// a record or a query. When used for a record, you will
-// need a hash set made with HashSet function for a query.
-// And vice versa.
+// by sampling luma values at well-distributed icon points
+// (hyperPoints, HyperPoints10) and later using package "hyper".
+// This hash can then be used for a record or a query.
+// When used for a record, you will need a hash set made
+// with func HashSet for a query. And vice versa.
+// To better understand CentralHash, read the following doc:
+// https://vitali-fedulov.github.io/algorithm-for-hashing-high-dimensional-float-vectors.html
 func CentralHash(icon IconT, hyperPoints []Point,
 	epsPercent float64, numBuckets int) uint64 {
 
@@ -32,13 +33,14 @@ func CentralHash(icon IconT, hyperPoints []Point,
 	return cube.DecimalHash()
 }
 
-// HashSet generates a hash set for a given icon
-// by sampling luma values of well-distributed icon points
-// (see var HyperPoints10 to understand how) and later using
-// hyper package functions. The hash set can then be used for
-// records or a query. When used for a query, you will
-// need a hash made with HashSet function as a record.
-// And vice versa.
+// HashSet generates a hash set for a given icon by sampling
+// luma values of well-distributed icon points (hyperPoints,
+// HyperPoints10) and later using package "hyper".
+// This hash set can then be used for records or a query.
+// When used for a query, you will need a hash made with
+// func CentralHash as a record. And vice versa.
+// To better understand HashSet, read the following doc:
+// https://vitali-fedulov.github.io/algorithm-for-hashing-high-dimensional-float-vectors.html
 func HashSet(icon IconT, hyperPoints []Point,
 	epsPercent float64, numBuckets int) []uint64 {
 
