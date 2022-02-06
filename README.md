@@ -2,7 +2,7 @@
 
 **This is the LATEST version** and a new location of package [images](https://github.com/vitali-fedulov/images).
 
-Near duplicates and resized images can be found with the package. Function `Open` supports JPEG, PNG and GIF (Go image-package default). But other image types are possible through third-party libraries, because the input for func `Icon` is simply image.Image. There is only one dependency: my [hyper](https://github.com/vitali-fedulov/hyper) package.
+Near duplicates and resized images can be found with the package. Function `Open` supports JPEG, PNG and GIF (Go image-package default). But other image types are possible through third-party libraries, because the input for func `Icon` is simply image.Image. There is only one dependency: my [hyper](https://github.com/vitali-fedulov/hyper) package, which in turn does not have any dependencies.
 
 **Demo**: [Similar image search and clustering](https://similar.pictures).
 
@@ -13,11 +13,6 @@ If you work with millions of images, using func `Similar` directly could be slow
 The package also contains basic functions to open/save/resize images.
 
 [Go doc](https://pkg.go.dev/github.com/vitali-fedulov/images3) for code reference.
-
-How to improve precision: Since icon is a tiny compressed representation of the whole large image, in some cases you may want to increase precision by comparing image sub-parts. For that you can generate your own image.Image for image sub-parts and compare icons for those sub-parts.
-
-Opening images is the most time-consuming operation, but since many JPEG images contain [EXIF thumbnails](https://www.similar.pictures/jpeg-thumbnail-reader.html), you could considerably speedup the reads by using decoded thumbnails to feed into func `Icon`. External packages to read thumbnails: [1](https://github.com/dsoprea/go-exif) and [2](https://github.com/rwcarlsen/goexif). A note of caution: in rare cases there could be [issues](https://security.stackexchange.com/questions/116552/the-history-of-thumbnails-or-just-a-previous-thumbnail-is-embedded-in-an-image/201785#201785) with thumbnails not matching image content. EXIF standard specification: [1](https://www.media.mit.edu/pia/Research/deepview/exif.html) and [2](https://www.exif.org/Exif2-2.PDF).
-
 
 ## Example of comparing 2 photos with func Similar
 
@@ -57,6 +52,10 @@ func main() {
 [Detailed explanation with illustrations](https://vitali-fedulov.github.io/algorithm-for-perceptual-image-comparison.html).
 
 Summary: Images are resized to small squares of fixed size (here called "icon"). A box filter is run against the resized images to calculate average color values. Then Euclidean distance between the icons is used to give the similarity verdict. Also image proportions are used to avoid matching images of distinct shape.
+
+What to do if you need to improve precision: Since icon is a tiny compressed representation of the whole large image, in some cases you may want to increase precision by comparing image sub-parts. For that you can generate your own image.Image for image sub-parts and compare icons for those sub-parts.
+
+Opening images is the most time-consuming operation, but since many JPEG images contain [EXIF thumbnails](https://www.similar.pictures/jpeg-thumbnail-reader.html), you could considerably speedup the reads by using decoded thumbnails to feed into func `Icon`. External packages to read thumbnails: [1](https://github.com/dsoprea/go-exif) and [2](https://github.com/rwcarlsen/goexif). A note of caution: in rare cases there could be [issues](https://security.stackexchange.com/questions/116552/the-history-of-thumbnails-or-just-a-previous-thumbnail-is-embedded-in-an-image/201785#201785) with thumbnails not matching image content. EXIF standard specification: [1](https://www.media.mit.edu/pia/Research/deepview/exif.html) and [2](https://www.exif.org/Exif2-2.PDF).
 
 
 ## Example of comparing 2 photos using hashes
