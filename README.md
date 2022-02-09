@@ -2,15 +2,15 @@
 
 **This is the LATEST module** of package [images](https://github.com/vitali-fedulov/images).
 
-Near duplicates and resized images can be found with the package. Function `Open` supports JPEG, PNG and GIF. But other image types are possible through third-party libraries, because the input for func `Icon` is image.Image. There is only one dependency: my [hyper](https://github.com/vitali-fedulov/hyper) package, which in turn does not have any dependencies.
+Near duplicates and resized images can be found with the package. Function `Open` supports JPEG, PNG and GIF. But other image types are possible through third-party libraries, because the input for func `Icon` is image.Image. There is only one dependency: my [hyper](https://github.com/vitali-fedulov/hyper) package, which does not have any dependencies.
 
 **Demo**: [Similar image search and clustering](https://similar.pictures).
 
-`Similar` function gives a verdict whether 2 images are similar based on Euclidean distance between specially constructed signatures ("icons") and package-default thresholds. 
+Function `Similar` gives a verdict whether 2 images are similar with well-tested default thresholds.
 
 If you prefer your own thresholds or sort by similarity metrics, use functions `PropMetric` and `EucMetric` to get metric values.
 
-For comparing millions of images, use a hash table as a preliminary filter (see example 2 below).
+For search of millions and billions of images, use a hash table for preliminary filtering (see Example 2 below).
 
 [Go doc](https://pkg.go.dev/github.com/vitali-fedulov/images3) for code reference.
 
@@ -49,7 +49,7 @@ func main() {
 
 ## Algorithm for image comparison
 
-[Detailed explanation with illustrations](https://vitali-fedulov.github.io/algorithm-for-perceptual-image-comparison.html).
+[Detailed explanation](https://vitali-fedulov.github.io/algorithm-for-perceptual-image-comparison.html), also as a [PDF](https://github.com/vitali-fedulov/research/blob/main/Algorithm%20for%20perceptual%20image%20comparison.pdf).
 
 Summary: Images are resized to small squares of fixed size (here called "icon"). A box filter is run against the resized images to calculate average color values. Then Euclidean distance between the icons is used to give the similarity verdict. Also image proportions are used to avoid matching images of distinct shape.
 
