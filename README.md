@@ -51,7 +51,7 @@ func main() {
 
 [Detailed explanation](https://vitali-fedulov.github.io/algorithm-for-perceptual-image-comparison.html), also as a [PDF](https://github.com/vitali-fedulov/research/blob/main/Algorithm%20for%20perceptual%20image%20comparison.pdf).
 
-Summary: Images are resized to small squares of fixed size (here called "icon"). A box filter is run against the resized images to calculate average color values. Then Euclidean distance between the icons is used to give the similarity verdict. Also image proportions are used to avoid matching images of distinct shape.
+Summary: Images are resized in a special way to squares of fixed size called "icons". Euclidean distance between the icons is used to give the similarity verdict. Also image proportions are used to avoid matching images of distinct shape.
 
 If you need to increase precision: Since icon is a tiny compressed representation of the whole large image, in some cases you may want to increase precision by comparing image sub-parts. For that you can generate your own image.Image for image sub-parts and compare icons for those sub-parts.
 
