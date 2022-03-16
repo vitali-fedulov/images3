@@ -1,6 +1,6 @@
 # Comparing images in Go
 
-**This is the NEWEST version** of package [images](https://github.com/vitali-fedulov/images).
+**This is the latest version** of package [images](https://github.com/vitali-fedulov/images).
 
 Near duplicates and resized images can be found with the package. Function `Open` supports JPEG, PNG and GIF. But other image types are possible through third-party libraries, because the input for func `Icon` is `image.Image`. There is only one dependency: my [hyper](https://github.com/vitali-fedulov/hyper) package, which does not have any dependencies.
 
