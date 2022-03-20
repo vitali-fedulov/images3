@@ -26,19 +26,19 @@ import (
 
 func main() {
 
-	// Paths to photos.
+	// Photos to compare.
 	path1 := "1.jpg"
 	path2 := "2.jpg"
 
-	// Open photos (skipping error handling for clarity).
+	// Open photos (ignoring errors here).
 	img1, _ := images3.Open(path1)
 	img2, _ := images3.Open(path2)
 
-	// Make icons. They are compact image representations.
+	// Icons are compact image representations.
 	icon1 := images3.Icon(img1, path1)
 	icon2 := images3.Icon(img2, path2)
 
-	// Image comparison.
+	// Comparison.
 	if images3.Similar(icon1, icon2) {
 		fmt.Println("Images are similar.")
 	} else {
