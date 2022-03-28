@@ -6,9 +6,11 @@ Near duplicates and resized images can be found with the package. It only depend
 
 **Demo**: [Similar image search and clustering](https://similar.pictures).
 
-Func `Similar` gives a verdict whether 2 images are similar with well-tested default thresholds. If you prefer your own thresholds or sort by similarity metrics, use functions `PropMetric` and `EucMetric`.
+Func `Similar` gives a verdict whether 2 images are similar with well-tested default thresholds.
 
-Func `Open` supports JPEG, PNG and GIF. But other image types are possible through third-party libraries, because the input for func `Icon` is `image.Image`.
+Func `EucMetric` allows your own thresholds, when you need different precision or want to sort by similarity. Such is also func `PropMetric`.
+
+Func `Open` supports JPEG, PNG and GIF. But other image types are possible through third-party libraries, because func `Icon` input is `image.Image`.
 
 For search in billions of images, use a hash table for preliminary filtering (see the 2nd example below).
 
@@ -47,15 +49,17 @@ func main() {
 }
 ```
 
-## Algorithm for image comparison
+## Algorithm used
 
 [Detailed explanation](https://vitali-fedulov.github.io/algorithm-for-perceptual-image-comparison.html), also as a [PDF](https://github.com/vitali-fedulov/research/blob/main/Algorithm%20for%20perceptual%20image%20comparison.pdf).
 
 Summary: Images are resized in a special way to squares of fixed size called "icons". Euclidean distance between the icons is used to give the similarity verdict. Also image proportions are used to avoid matching images of distinct shape.
 
-To increase precision: make `image.Image` for image sub-parts and compare their icons.
+## Customization suggestions
 
-Opening images is the most time-consuming operation, but since many JPEG images contain [EXIF thumbnails](https://www.similar.pictures/jpeg-thumbnail-reader.html), you could considerably speedup the reads by using decoded thumbnails to feed into func `Icon`. External packages to read thumbnails: [1](https://github.com/dsoprea/go-exif) and [2](https://github.com/rwcarlsen/goexif). A note of caution: in rare cases there could be [issues](https://security.stackexchange.com/questions/116552/the-history-of-thumbnails-or-just-a-previous-thumbnail-is-embedded-in-an-image/201785#201785) with thumbnails not matching image content. EXIF standard specification: [1](https://www.media.mit.edu/pia/Research/deepview/exif.html) and [2](https://www.exif.org/Exif2-2.PDF).
+To increase precision you can either use your own thresholds in func `EucMetric` (and `PropMetric`) OR generate icons for image sub-regions and compare those icons.
+
+To speedup file processing you may want to generate icons for available image thumbnails. Specifically, many JPEG images contain [EXIF thumbnails](https://www.similar.pictures/jpeg-thumbnail-reader.html), you could considerably speedup the reads by using decoded thumbnails to feed into func `Icon`. External packages to read thumbnails: [1](https://github.com/dsoprea/go-exif) and [2](https://github.com/rwcarlsen/goexif). A note of caution: in rare cases there could be [issues](https://security.stackexchange.com/questions/116552/the-history-of-thumbnails-or-just-a-previous-thumbnail-is-embedded-in-an-image/201785#201785) with thumbnails not matching image content. EXIF standard specification: [1](https://www.media.mit.edu/pia/Research/deepview/exif.html) and [2](https://www.exif.org/Exif2-2.PDF).
 
 
 ## Example of comparing 2 photos using hashes
