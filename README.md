@@ -8,7 +8,7 @@ Near duplicates and resized images can be found with the package. It only depend
 
 Func `Similar` gives a verdict whether 2 images are similar with well-tested default thresholds.
 
-Func `EucMetric` allows your own thresholds, when you need different precision or want to sort by similarity. Such is also func `PropMetric`.
+Use func `EucMetric`, when you need different precision or want to sort by similarity. Func `PropMetric` can be used for customization of image proportion threshold.
 
 Func `Open` supports JPEG, PNG and GIF. But other image types are possible through third-party libraries, because func `Icon` input is `image.Image`.
 
