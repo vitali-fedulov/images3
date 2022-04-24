@@ -2,7 +2,9 @@
 
 **This is the LATEST version** of package [images](https://github.com/vitali-fedulov/images).
 
-Near duplicates and resized images can be found with the package. It only depends on my [hyper](https://github.com/vitali-fedulov/hyper) package, which does not have any dependencies.
+Near duplicates and resized images can be found with the package.
+
+It only depends on my [hyper](https://github.com/vitali-fedulov/hyper) package, which does not have any dependencies. If you are not planning to use hashes, you can remove this dependency by deleting hashes.go and hashes_test.go from your custom fork.
 
 **Demo**: [Similar image search and clustering](https://similar.pictures).
 
