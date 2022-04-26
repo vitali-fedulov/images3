@@ -2,7 +2,7 @@
 
 Near duplicates and resized images can be found with the package.
 
-**Demo**: [similar image clustering](https://similar.pictures) based on same algorithm.
+**Demo**: [similar image clustering](https://similar.pictures) based on similar algorithm.
 
 **This is the latest major version** of [images](https://github.com/vitali-fedulov/images).
 
