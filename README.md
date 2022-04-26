@@ -1,4 +1,4 @@
-# Comparing images in Go
+# Find similar images in Go
 
 Near duplicates and resized images can be found with the package.
 
