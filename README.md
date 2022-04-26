@@ -2,11 +2,11 @@
 
 Near duplicates and resized images can be found with the package.
 
-**This is the LATEST version** of package [images](https://github.com/vitali-fedulov/images).
+**Demo**: [similar image clustering](https://similar.pictures) based on same algorithm.
 
-The only dependency is on my [hyper](https://github.com/vitali-fedulov/hyper) package, which does not have any dependencies. If you are not planning to use hashes, you can remove this dependency by deleting hashes.go and hashes_test.go from your fork.
+**This is the latest major version** of [images](https://github.com/vitali-fedulov/images).
 
-**Demo**: [Similar image search and clustering](https://similar.pictures).
+The only dependency is [hyper](https://github.com/vitali-fedulov/hyper) package, which in turn does not have any dependencies. If you are not using hashes, you can remove this dependency by deleting files [hashes.go, hashes_test.go] from your fork.
 
 Func `Similar` gives a verdict whether 2 images are similar with well-tested default thresholds.
 
