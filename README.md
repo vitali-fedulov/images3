@@ -6,17 +6,17 @@ Near duplicates and resized images can be found with the package.
 
 **This is the latest major version** of [images](https://github.com/vitali-fedulov/images).
 
-The only dependency is [hyper](https://github.com/vitali-fedulov/hyper) package, which in turn does not have any dependencies. If you are not using hashes, you can remove this dependency by deleting files [hashes.go, hashes_test.go] from your fork.
-
 Func `Similar` gives a verdict whether 2 images are similar with well-tested default thresholds.
 
-Use func `EucMetric`, when you need different precision or want to sort by similarity. Func `PropMetric` can be used for customization of image proportion threshold.
+Func `EucMetric` can be used instead, when you need different precision or want to sort by similarity. Func `PropMetric` can be used for customization of image proportion threshold.
 
 Func `Open` supports JPEG, PNG and GIF. But other image types are possible through third-party libraries, because func `Icon` input is `image.Image`.
 
 For search in billions of images, use a hash table for preliminary filtering (see the 2nd example below).
 
 [Go doc](https://pkg.go.dev/github.com/vitali-fedulov/images3) for code reference.
+
+The only dependency is [hyper](https://github.com/vitali-fedulov/hyper) package, which in turn does not have any dependencies. If you are not using hashes, you can remove this dependency by deleting files [hashes.go, hashes_test.go] from your fork.
 
 ## Example of comparing 2 photos with func Similar
 
