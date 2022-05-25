@@ -211,16 +211,26 @@ func (src IconT) normalize(size int) {
 	}
 
 	// Normalization.
-	rCoeff := 255 / (c1Max - c1Min)
-	gCoeff := 255 / (c2Max - c2Min)
-	bCoeff := 255 / (c3Max - c3Min)
-	for n = 0; n < numPixels; n++ {
-		src.Pixels[n] =
-			(src.Pixels[n] - c1Min) * rCoeff
-		src.Pixels[n+numPixels] =
-			(src.Pixels[n+numPixels] - c2Min) * gCoeff
-		src.Pixels[n+2*numPixels] =
-			(src.Pixels[n+2*numPixels] - c3Min) * bCoeff
+	if c1Max != c1Min { // Must not divide by zero.
+		for n = 0; n < numPixels; n++ {
+			src.Pixels[n] =
+				(src.Pixels[n] - c1Min) *
+					255 / (c1Max - c1Min)
+		}
+	}
+	if c2Max != c2Min { // Must not divide by zero.
+		for n = 0; n < numPixels; n++ {
+			src.Pixels[n+numPixels] =
+				(src.Pixels[n+numPixels] - c2Min) *
+					255 / (c2Max - c2Min)
+		}
+	}
+	if c3Max != c3Min { // Must not divide by zero.
+		for n = 0; n < numPixels; n++ {
+			src.Pixels[n+2*numPixels] =
+				(src.Pixels[n+2*numPixels] - c3Min) *
+					255 / (c3Max - c3Min)
+		}
 	}
 
 }

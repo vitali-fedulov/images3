@@ -74,4 +74,9 @@ func TestEucSimilar(t *testing.T) {
 	testEucSimilar("large.jpg", "distorted.jpg", true, t)
 	testEucSimilar("large.jpg", "flipped.jpg", false, t)
 	testEucSimilar("large.jpg", "small.jpg", true, t)
+	testEucSimilar("uniform-black.png", "uniform-black.png", true, t)
+	testEucSimilar("uniform-black.png", "uniform-white.png", false, t)
+	testEucSimilar("uniform-green.png", "uniform-green.png", true, t)
+	testEucSimilar("uniform-green.png", "uniform-white.png", false, t)
+	testEucSimilar("uniform-white.png", "uniform-white.png", true, t)
 }
