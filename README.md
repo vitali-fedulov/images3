@@ -16,7 +16,7 @@ For search in billions of images, use a hash table for preliminary filtering (se
 
 [Go doc](https://pkg.go.dev/github.com/vitali-fedulov/images3) for code reference.
 
-The only dependency is [hyper](https://github.com/vitali-fedulov/hyper) package, which in turn does not have any dependencies. If you are not using hashes, you can remove this dependency by deleting files [hashes.go, hashes_test.go] from your fork.
+The only dependency is my [hyper](https://github.com/vitali-fedulov/hyper) package, which in turn does not have any dependencies. If you are not using hashes, you can remove this dependency by deleting files [hashes.go, hashes_test.go] from your fork.
 
 ## Example of comparing 2 photos with func Similar
 
@@ -51,7 +51,7 @@ func main() {
 }
 ```
 
-## Algorithm used
+## Algorithm
 
 [Detailed explanation](https://vitali-fedulov.github.io/similar.pictures/algorithm-for-perceptual-image-comparison.html), also as a [PDF](https://github.com/vitali-fedulov/research/blob/main/Algorithm%20for%20perceptual%20image%20comparison.pdf).
 
