@@ -115,6 +115,7 @@ func main() {
 	for _, hash := range hashSet {
 		if centralHash == hash {
 			foundSimilarImage = true
+			break
 		}
 	}
 
