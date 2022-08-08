@@ -1,10 +1,10 @@
-# Find similar images with Go
+# Find similar images with Go  &#10132; [LATEST version](https://github.com/vitali-fedulov/images4)
 
 Near duplicates and resized images can be found with the package.
 
 **Demo**: [similar image clustering](https://vitali-fedulov.github.io/similar.pictures/) based on the algorithm.
 
-**This is the latest major version** of [images](https://github.com/vitali-fedulov/images).
+This is the 3d major version of [images](https://github.com/vitali-fedulov/images). Try [4th major version](https://github.com/vitali-fedulov/images4).
 
 Func `Similar` gives a verdict whether 2 images are similar with well-tested default thresholds.
 
