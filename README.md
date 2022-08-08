@@ -6,6 +6,9 @@ Near duplicates and resized images can be found with the package.
 
 This is the 3d major version of [images](https://github.com/vitali-fedulov/images). Try [4th major version](https://github.com/vitali-fedulov/images4).
 
+Changes in v3 vs v2: (1) Hashes get proper "hashy" meaning. If you work with millions of images, do preliminary image comparison with hash tables.
+(2) Renamed functions. What used to be `Hash` now becomes `Icon` to reflect (1).
+
 Func `Similar` gives a verdict whether 2 images are similar with well-tested default thresholds.
 
 Func `EucMetric` can be used instead, when you need different precision or want to sort by similarity. Func `PropMetric` can be used for customization of image proportion threshold.
