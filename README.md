@@ -4,7 +4,7 @@ Near duplicates and resized images can be found with the package.
 
 **Demo**: [similar image clustering](https://vitali-fedulov.github.io/similar.pictures/) based on the algorithm.
 
-**Versions**: There are in total 3 version repositories: [images](https://github.com/vitali-fedulov/images), images 3 (this one), and the latest major version [images4](https://github.com/vitali-fedulov/images4).
+**Versions**: There are in total 3 version repositories: [images](https://github.com/vitali-fedulov/images) (oldest), images3 (this one), and the latest major version [images4](https://github.com/vitali-fedulov/images4) (recommended).
 
 Changes in images3 vs images: (1) Hashes get proper "hashy" meaning. If you work with millions of images, do preliminary image comparison with hash tables. (2) Renamed functions. What used to be `Hash` now becomes `Icon` to reflect (1).
 
