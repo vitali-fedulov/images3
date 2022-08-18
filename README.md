@@ -2,11 +2,18 @@
 
 Near duplicates and resized images can be found with the package.
 
-**Demo**: [similar image clustering](https://vitali-fedulov.github.io/similar.pictures/) based on the algorithm.
+**Demo**: [similar image clustering](https://vitali-fedulov.github.io/similar.pictures/) (deployed [from](https://github.com/vitali-fedulov/similar.pictures)).
 
-**Versions**: There are in total 3 version repositories: [images](https://github.com/vitali-fedulov/images) (oldest), images3 (this one), and the latest major version [images4](https://github.com/vitali-fedulov/images4) (recommended).
+**Versions**:
+- [oldest v1/v2](https://github.com/vitali-fedulov/images),
+- this v3,
+- [latest recommended v4](https://github.com/vitali-fedulov/images4).
 
-Changes in images3 vs images: (1) Hashes get proper "hashy" meaning. If you work with millions of images, do preliminary image comparison with hash tables. (2) Renamed functions. What used to be `Hash` now becomes `Icon` to reflect (1).
+All versions will be kept available indefinitely.
+
+Release note (v3): (1) Hashes get proper "hashy" meaning. If you work with millions of images, do preliminary image comparison with hash tables. (2) Renamed functions. What used to be `Hash` now becomes `Icon` to reflect (1).
+
+## Key functions
 
 Func `Similar` gives a verdict whether 2 images are similar with well-tested default thresholds.
 
