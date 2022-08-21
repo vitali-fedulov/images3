@@ -4,10 +4,10 @@ Near duplicates and resized images can be found with the package.
 
 **Demo**: [similar image clustering](https://vitali-fedulov.github.io/similar.pictures/) (deployed [from](https://github.com/vitali-fedulov/similar.pictures)).
 
-**Versions**:
-- [oldest v1/v2](https://github.com/vitali-fedulov/images),
-- this v3,
-- [latest recommended v4](https://github.com/vitali-fedulov/images4).
+**Semantic versions**:
+- [v1/v2](https://github.com/vitali-fedulov/images) (/images) - the oldest,
+- v3 (/images3) - this repository,
+- [v4](https://github.com/vitali-fedulov/images4) (/images4) - latest recommended.
 
 All versions will be kept available indefinitely.
 
